@@ -26,7 +26,8 @@ Email: <argilo@gmail.com>
 This GNU Radio block and sample flow graph are intended to receive
 packets transmitted by Elster smart meters on the 902-928 MHz band.  In
 particular, I have tested it with the Elster R2S hydro meters used in the
-Ottawa area.  It may work with other Elster meters.
+Ottawa area.  It may work with other Elster meters.  Please let me know
+what you manage to receive with it.
 
 It is not yet complete, as I have not fully reverse engineered the packet
 structure, nor the payload data.  But it is able to dump complete
