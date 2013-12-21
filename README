@@ -23,6 +23,37 @@ gr-elster
 Author: Clayton Smith
 Email: <argilo@gmail.com>
 
+This GNU Radio block and sample flow graph are intended to receive
+packets transmitted by Elster smart meters on the 902-928 MHz band.  In
+particular, I have tested it with the Elster R2S hydro meters used in the
+Ottawa area.  It may work with other Elster meters.
+
+It is not yet complete, as I have not fully reverse engineered the packet
+structure, nor the payload data.  But it is able to dump complete
+packets, and can display meter readings and hourly electricity usage
+data.  When running, it dumps all packets to the console in hex, and
+decodes those packets containing meter readings as follows:
+
+  Meter reading for meter #XXXXXXX: YYYYY kWh
+  Hourly readings: Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ
+
+in my area, usage data is transmitted approximately every six hours, so
+it may be necessary to wait a while before such packets will appear.
+
+The flow graph in /apps/elster_rx.grc is intended for use with an RTL-SDR
+dongle, but can likely be used with other SDR receivers as well.  It
+receives six out of the 25 frequency-hopping channels used in my area,
+but that should be sufficient to receive most traffic since packets are
+repeated a few times on different channels.  The number of simultaneous
+channels is limited by the bandwidth of the SDR.  An RTL-SDR dongle can
+receive reliably up to about 2.4 MHz, which is sufficient for six 400-kHz
+channels.
+
+To simplify multi-channel reception, the flow graph intentionally aliases
+together the six channels (centred at 903.6, 904.0, 904.4, 904.8, 905.2,
+and 905.6 MHz) using a "Keep 1 in N" block.  This works fine except when
+two channels are used at once, but that rarely occurs.
+
 Build instructions:
 
     mkdir build
@@ -30,3 +61,6 @@ Build instructions:
     cmake ../
     make
     sudo make install
+
+Any help you can offer with reverse engineering or coding would be
+greatly appreciated!
