@@ -37,7 +37,7 @@ decodes those packets containing meter readings as follows:
   Meter reading for meter #XXXXXXX: YYYYY kWh
   Hourly readings: Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ
 
-in my area, usage data is transmitted approximately every six hours, so
+In my area, usage data is transmitted approximately every six hours, so
 it may be necessary to wait a while before such packets will appear.
 
 The flow graph in /apps/elster_rx.grc is intended for use with an RTL-SDR
