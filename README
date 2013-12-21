@@ -48,7 +48,7 @@ receives six out of the 25 frequency-hopping channels used in my area,
 but that should be sufficient to receive most traffic since packets are
 repeated a few times on different channels.  The number of simultaneous
 channels is limited by the bandwidth of the SDR.  An RTL-SDR dongle can
-receive reliably up to about 2.4 MHz, which is sufficient for six 400-kHz
+reliably receive up to about 2.4 MHz, which is sufficient for six 400-kHz
 channels.
 
 To simplify multi-channel reception, the flow graph intentionally aliases
