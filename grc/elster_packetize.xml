@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<block>
+  <name>packetize</name>
+  <key>elster_packetize</key>
+  <category>elster</category>
+  <import>import elster</import>
+  <make>elster.packetize($num_inputs)</make>
+
+  <param>
+    <name>Num Inputs</name>
+    <key>num_inputs</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <check>$num_inputs &gt; 0</check>
+
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+    <nports>$num_inputs</nports>
+  </sink>
+
+</block>
