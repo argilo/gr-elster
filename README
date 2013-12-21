@@ -54,6 +54,9 @@ together the six channels (centred at 903.6, 904.0, 904.4, 904.8, 905.2,
 and 905.6 MHz) using a "Keep 1 in N" block.  This works fine except when
 two channels are used at once, but that rarely occurs.
 
+For best reception with an RTL-SDR dongle, set the frequency correction
+slider to the appropriate value (in PPM) for your particular tuner.
+
 Build instructions:
 
     mkdir build
