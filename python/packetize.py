@@ -71,7 +71,7 @@ class packetize(gr.sync_block):
             main_reading = int(bytestring[125:133])
             num_hourly = int(bytestring[57:59], 16)
             if num_hourly > 16:
-                print "  Number of hourly readings in too high: " + hex(num_hourly)
+                print "  Number of hourly readings is too high: " + hex(num_hourly)
                 num_hourly = 16
             hourly_readings = []
             for x in range(num_hourly):
