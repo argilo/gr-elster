@@ -22,3 +22,11 @@ gr-elster
 
 Author: Clayton Smith
 Email: <argilo@gmail.com>
+
+Build instructions:
+
+    mkdir build
+    cd build
+    cmake ../
+    make
+    sudo make install
