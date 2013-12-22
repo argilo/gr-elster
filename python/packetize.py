@@ -65,14 +65,18 @@ class packetize(gr.sync_block):
         bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:28] + ' ' + bytestring[28:-4] + ' ' + bytestring[-4:]
         print(datetime.datetime.now().strftime("%H:%M:%S.%f") + '  ' + bytestring)
         if length == 0x44:
-            # This packet contains meter readings!
+            # This packet probably contains meter readings!
             print
             meter_number = int(bytestring[6:14], 16)
-            main_reading = int(bytestring[125:133])
+            try:
+                main_reading = int(bytestring[127:133])
+            except ValueError:
+                print "  Error decoding main reading: " + bytestring[127:133]
+                main_reading = 0
             num_hourly = int(bytestring[57:59], 16)
-            if num_hourly > 16:
+            if num_hourly > 17:
                 print "  Number of hourly readings is too high: " + hex(num_hourly)
-                num_hourly = 16
+                num_hourly = 17
             hourly_readings = []
             for x in range(num_hourly):
                 hourly_readings.append(int(bytestring[59 + x*4 : 63 + x*4], 16) / 100.0)
