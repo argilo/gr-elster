@@ -16,4 +16,3 @@ install_manifest.txt
 /swig/*_doc*
 get_swig_deps.py
 python_compile_helper.py
-apps/elster_rx.py
