@@ -22,7 +22,7 @@ import numpy
 import datetime
 from gnuradio import gr
 
-class packetize(gr.sync_block):
+class packetize(gr.basic_block):
     # The preamble (32 ones) and SFD (0000 1100 1011 1101) in Manchester form
     preamble_sfd = numpy.array([1,0]*32 + [0,1, 0,1, 0,1, 0,1, 1,0, 1,0, 0,1, 0,1, 1,0, 0,1, 1,0, 1,0, 1,0, 1,0, 0,1, 1,0],dtype=numpy.int8).tostring()
 
@@ -30,7 +30,7 @@ class packetize(gr.sync_block):
     docstring for block packetize
     """
     def __init__(self, num_inputs):
-        gr.sync_block.__init__(self,
+        gr.basic_block.__init__(self,
             name="packetize",
             in_sig=[numpy.int8]*num_inputs,
             out_sig=[])
@@ -94,9 +94,13 @@ class packetize(gr.sync_block):
             # and extract the bits from the Manchester encoding.
             self.process_packet(channel, man_bits[96::2])
 
-    def work(self, input_items, output_items):
+    def forecast(self, noutput_items, ninput_items_required):
+        ninput_items_required[0] = 5000
+
+    def general_work(self, input_items, output_items):
         # Wait until we get at least one packet worth of Manchester bits
         if len(input_items[0]) < 1248:
+            self.consume(0, 0)
             return 0
 
 	for channel in range(len(input_items)):
@@ -105,5 +109,5 @@ class packetize(gr.sync_block):
                 self.manchester_demod_packet(channel, input_items[channel][index:index+1248])
 		index = input_items[channel].tostring().find(self.preamble_sfd, index+1248, -1248+96)
             
-        return len(input_items[0])-1247
-
+        self.consume(0, len(input_items[0])-1247)
+        return 0
