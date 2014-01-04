@@ -103,11 +103,11 @@ class packetize(gr.basic_block):
             self.consume(0, 0)
             return 0
 
-	for channel in range(len(input_items)):
+        for channel in range(len(input_items)):
             index = input_items[channel].tostring().find(self.preamble_sfd, 0, -1248+96)
             while index != -1:
                 self.manchester_demod_packet(channel, input_items[channel][index:index+1248])
-		index = input_items[channel].tostring().find(self.preamble_sfd, index+1248, -1248+96)
-            
+                index = input_items[channel].tostring().find(self.preamble_sfd, index+1248, -1248+96)
+
         self.consume(0, len(input_items[0])-1247)
         return 0
