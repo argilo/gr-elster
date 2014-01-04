@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx
-# Generated: Tue Dec 24 09:42:18 2013
+# Generated: Sat Jan  4 11:51:18 2014
 ##################################################
 
 from gnuradio import analog
@@ -99,8 +99,8 @@ class elster_rx(grc_wxgui.top_block_gui):
         	ref_level=-30,
         	ref_scale=2.0,
         	sample_rate=samp_rate,
-        	fft_size=2048,
-        	fft_rate=30,
+        	fft_size=1024,
+        	fft_rate=15,
         	average=False,
         	avg_alpha=None,
         	title="Waterfall Plot",
@@ -145,8 +145,8 @@ class elster_rx(grc_wxgui.top_block_gui):
         	ref_level=0,
         	ref_scale=2.0,
         	sample_rate=samp_rate,
-        	fft_size=1024,
-        	fft_rate=30,
+        	fft_size=512,
+        	fft_rate=15,
         	average=False,
         	avg_alpha=None,
         	title="FFT Plot",

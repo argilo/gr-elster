@@ -637,11 +637,11 @@
     </param>
     <param>
       <key>fft_size</key>
-      <value>1024</value>
+      <value>512</value>
     </param>
     <param>
       <key>fft_rate</key>
-      <value>30</value>
+      <value>15</value>
     </param>
     <param>
       <key>peak_hold</key>
@@ -728,11 +728,11 @@
     </param>
     <param>
       <key>fft_size</key>
-      <value>2048</value>
+      <value>1024</value>
     </param>
     <param>
       <key>fft_rate</key>
-      <value>30</value>
+      <value>15</value>
     </param>
     <param>
       <key>average</key>
