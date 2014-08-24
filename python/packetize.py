@@ -95,17 +95,17 @@ class packetize(gr.basic_block):
             print
             meter_number = int(bytestring[6:14], 16)
             try:
-                main_reading = int(bytestring[127:133])
+                main_reading = int(bytestring[128:134])
             except ValueError:
-                print "  Error decoding main reading: " + bytestring[127:133]
+                print "  Error decoding main reading: " + bytestring[128:134]
                 main_reading = 0
-            num_hourly = int(bytestring[57:59], 16)
+            num_hourly = int(bytestring[58:60], 16)
             if num_hourly > 17:
                 print "  Number of hourly readings is too high: " + hex(num_hourly)
                 num_hourly = 17
             hourly_readings = []
             for x in range(num_hourly):
-                hourly_readings.append(int(bytestring[59 + x*4 : 63 + x*4], 16) / 100.0)
+                hourly_readings.append(int(bytestring[60 + x*4 : 64 + x*4], 16) / 100.0)
             print "  Meter reading for meter #" + str(meter_number) + ": " + str(main_reading) + " kWh"
             print "  Hourly readings: " + str(hourly_readings)[1:-1]
             print
