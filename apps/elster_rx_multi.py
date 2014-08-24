@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx Multi
-# Generated: Sat Aug 23 22:33:42 2014
+# Generated: Sat Aug 23 22:46:05 2014
 ##################################################
 
 from gnuradio import analog
@@ -37,7 +37,7 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.window_size = window_size = (800,600)
         self.samp_rate = samp_rate = 2400000
         self.rx_gain = rx_gain = 45
-        self.corr = corr = 29
+        self.corr = corr = 0
         self.channel_rate = channel_rate = 400000
         self.channel_decimation = channel_decimation = 4
         self.ch_filt_trans = ch_filt_trans = 10000
@@ -231,9 +231,9 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
 
     def set_corr(self, corr):
         self.corr = corr
+        self.osmosdr_source_1.set_freq_corr(self.corr, 0)
         self._corr_slider.set_value(self.corr)
         self._corr_text_box.set_value(self.corr)
-        self.osmosdr_source_1.set_freq_corr(self.corr, 0)
 
     def get_channel_rate(self):
         return self.channel_rate
