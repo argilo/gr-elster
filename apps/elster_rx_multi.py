@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx Multi
-# Generated: Sat Aug 23 22:46:05 2014
+# Generated: Sat Aug 23 22:56:50 2014
 ##################################################
 
 from gnuradio import analog
@@ -50,7 +50,6 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.nb = self.nb = wx.Notebook(self.GetWin(), style=wx.NB_TOP)
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "Band spectrum")
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "Band waterfall")
-        self.nb.AddPage(grc_wxgui.Panel(self.nb), "Channel spectrum")
         self.Add(self.nb)
         _corr_sizer = wx.BoxSizer(wx.VERTICAL)
         self._corr_text_box = forms.text_box(
