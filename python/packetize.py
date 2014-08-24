@@ -20,6 +20,9 @@
 
 import numpy
 import datetime
+import os.path
+import struct
+import time
 from gnuradio import gr
 
 class packetize(gr.basic_block):
@@ -34,6 +37,19 @@ class packetize(gr.basic_block):
             name="packetize",
             in_sig=[numpy.int8]*num_inputs,
             out_sig=[])
+
+        i = 1
+        filename = "elster-" + "{0:03}".format(i) + ".pcap"
+        while os.path.exists(filename):
+            i += 1
+            filename = "elster-" + "{0:03}".format(i) + ".pcap"
+        self.f = open(filename, "wb")
+        self.linktype = 147
+        self.f.write(struct.pack("IHHIIII", 0xa1b2c3d4L, 2, 4, 0, 0, 32767, self.linktype))
+        self.f.flush()
+
+    def __del__(self):
+        self.f.close()
 
     def crc_x25(self, message):
         poly = 0x8408
@@ -61,6 +77,16 @@ class packetize(gr.basic_block):
         if self.crc_x25(bytes[0:length].tostring()) != bytes[length:length+2].tostring():
             print "Invalid checksum."
             return
+
+        caplen = len(bytes)-2
+        wirelen = caplen
+        t=time.time()
+        sec = int(t)
+        usec = int(round((t-sec)*1000000))
+        self.f.write(struct.pack("IIII", sec, usec, caplen, wirelen))
+        self.f.write(bytes[0:-2])
+        self.f.flush()
+
         bytestring = ''.join(["0x{:02x}".format(int(byte))[2:4] for byte in bytes])
         bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:28] + ' ' + bytestring[28:-4] + ' ' + bytestring[-4:]
         print(datetime.datetime.now().strftime("%H:%M:%S.%f") + '  ' + bytestring)
