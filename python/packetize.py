@@ -95,7 +95,8 @@ class packetize(gr.basic_block):
             self.process_packet(channel, man_bits[96::2])
 
     def forecast(self, noutput_items, ninput_items_required):
-        ninput_items_required[0] = 5000
+        for channel in range(len(ninput_items_required)):
+            ninput_items_required[channel] = 5000
 
     def general_work(self, input_items, output_items):
         # Wait until we get at least one packet worth of Manchester bits
@@ -108,6 +109,6 @@ class packetize(gr.basic_block):
             while index != -1:
                 self.manchester_demod_packet(channel, input_items[channel][index:index+1248])
                 index = input_items[channel].tostring().find(self.preamble_sfd, index+1248, -1248+96)
+            self.consume(channel, len(input_items[0])-1247)
 
-        self.consume(0, len(input_items[0])-1247)
         return 0
