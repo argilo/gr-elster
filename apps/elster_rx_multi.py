@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx Multi
-# Generated: Sat Aug 23 20:41:33 2014
+# Generated: Sat Aug 23 22:33:42 2014
 ##################################################
 
 from gnuradio import analog
@@ -37,9 +37,11 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.window_size = window_size = (800,600)
         self.samp_rate = samp_rate = 2400000
         self.rx_gain = rx_gain = 45
-        self.corr = corr = 0
+        self.corr = corr = 29
         self.channel_rate = channel_rate = 400000
         self.channel_decimation = channel_decimation = 4
+        self.ch_filt_trans = ch_filt_trans = 10000
+        self.ch_filt_cut = ch_filt_cut = 35000
         self.center_freq = center_freq = 904600000
 
         ##################################################
@@ -48,6 +50,7 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.nb = self.nb = wx.Notebook(self.GetWin(), style=wx.NB_TOP)
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "Band spectrum")
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "Band waterfall")
+        self.nb.AddPage(grc_wxgui.Panel(self.nb), "Channel spectrum")
         self.Add(self.nb)
         _corr_sizer = wx.BoxSizer(wx.VERTICAL)
         self._corr_text_box = forms.text_box(
@@ -125,17 +128,17 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.osmosdr_source_1.set_bandwidth(0, 0)
           
         self.low_pass_filter_1_4 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_1_3 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_1_2 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_1_1 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_1_0 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_1 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, ch_filt_cut, ch_filt_trans, firdes.WIN_HAMMING, 6.76))
         self.elster_packetize_0 = elster.packetize(6)
         self.digital_clock_recovery_mm_xx_0_4 = digital.clock_recovery_mm_ff(channel_rate * 56.48E-6 / 2 / channel_decimation, 0.25*(0.05*0.05), 0.5, 0.05, 0.005)
         self.digital_clock_recovery_mm_xx_0_3 = digital.clock_recovery_mm_ff(channel_rate * 56.48E-6 / 2 / channel_decimation, 0.25*(0.05*0.05), 0.5, 0.05, 0.005)
@@ -183,7 +186,6 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.connect((self.low_pass_filter_1_3, 0), (self.digital_clock_recovery_mm_xx_0_3, 0))
         self.connect((self.analog_quadrature_demod_cf_0_3, 0), (self.low_pass_filter_1_3, 0))
         self.connect((self.digital_clock_recovery_mm_xx_0_3, 0), (self.digital_binary_slicer_fb_0_3, 0))
-        self.connect((self.low_pass_filter_1_4, 0), (self.digital_clock_recovery_mm_xx_0_4, 0))
         self.connect((self.analog_quadrature_demod_cf_0_4, 0), (self.low_pass_filter_1_4, 0))
         self.connect((self.digital_clock_recovery_mm_xx_0_4, 0), (self.digital_binary_slicer_fb_0_4, 0))
         self.connect((self.pfb_channelizer_ccf_0, 1), (self.analog_quadrature_demod_cf_0_0, 0))
@@ -196,6 +198,7 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.connect((self.digital_binary_slicer_fb_0_1, 0), (self.elster_packetize_0, 2))
         self.connect((self.digital_binary_slicer_fb_0_2, 0), (self.elster_packetize_0, 3))
         self.connect((self.digital_binary_slicer_fb_0_3, 0), (self.elster_packetize_0, 4))
+        self.connect((self.low_pass_filter_1_4, 0), (self.digital_clock_recovery_mm_xx_0_4, 0))
 
 
 
@@ -210,11 +213,11 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.wxgui_waterfallsink2_0.set_sample_rate(self.samp_rate)
         self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
-        self.osmosdr_source_1.set_sample_rate(self.samp_rate)
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.pfb_channelizer_ccf_0.set_taps((firdes.low_pass(1, self.samp_rate, 175000, 50000, firdes.WIN_HAMMING, 6.76)))
+        self.osmosdr_source_1.set_sample_rate(self.samp_rate)
 
     def get_rx_gain(self):
         return self.rx_gain
@@ -238,23 +241,23 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
     def set_channel_rate(self, channel_rate):
         self.channel_rate = channel_rate
         self.analog_quadrature_demod_cf_0.set_gain(self.channel_rate/(115000*2*3.1416))
-        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.digital_clock_recovery_mm_xx_0.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.digital_clock_recovery_mm_xx_0_0.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
-        self.low_pass_filter_1_0.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.digital_clock_recovery_mm_xx_0_1.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
-        self.low_pass_filter_1_1.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
-        self.low_pass_filter_1_2.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.digital_clock_recovery_mm_xx_0_2.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.digital_clock_recovery_mm_xx_0_3.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
-        self.low_pass_filter_1_3.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.digital_clock_recovery_mm_xx_0_4.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
-        self.low_pass_filter_1_4.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.analog_quadrature_demod_cf_0_0.set_gain(self.channel_rate/(115000*2*3.1416))
         self.analog_quadrature_demod_cf_0_1.set_gain(self.channel_rate/(115000*2*3.1416))
         self.analog_quadrature_demod_cf_0_2.set_gain(self.channel_rate/(115000*2*3.1416))
         self.analog_quadrature_demod_cf_0_3.set_gain(self.channel_rate/(115000*2*3.1416))
         self.analog_quadrature_demod_cf_0_4.set_gain(self.channel_rate/(115000*2*3.1416))
+        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_0.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_2.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_3.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_4.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
 
     def get_channel_decimation(self):
         return self.channel_decimation
@@ -267,6 +270,30 @@ class elster_rx_multi(grc_wxgui.top_block_gui):
         self.digital_clock_recovery_mm_xx_0_2.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.digital_clock_recovery_mm_xx_0_3.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.digital_clock_recovery_mm_xx_0_4.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
+
+    def get_ch_filt_trans(self):
+        return self.ch_filt_trans
+
+    def set_ch_filt_trans(self, ch_filt_trans):
+        self.ch_filt_trans = ch_filt_trans
+        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_0.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_2.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_3.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_4.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+
+    def get_ch_filt_cut(self):
+        return self.ch_filt_cut
+
+    def set_ch_filt_cut(self, ch_filt_cut):
+        self.ch_filt_cut = ch_filt_cut
+        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_0.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_1.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_2.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_3.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_1_4.set_taps(firdes.low_pass(1, self.channel_rate, self.ch_filt_cut, self.ch_filt_trans, firdes.WIN_HAMMING, 6.76))
 
     def get_center_freq(self):
         return self.center_freq

@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx
-# Generated: Sat Aug 23 20:04:08 2014
+# Generated: Sat Aug 23 22:30:36 2014
 ##################################################
 
 from gnuradio import analog
@@ -166,7 +166,7 @@ class elster_rx(grc_wxgui.top_block_gui):
         self.osmosdr_source_1.set_bandwidth(0, 0)
           
         self.low_pass_filter_1 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
-        	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
+        	1, channel_rate, 35000, 10000, firdes.WIN_HAMMING, 6.76))
         self.elster_packetize_0 = elster.packetize(1)
         self.digital_correlate_access_code_bb_0 = digital.correlate_access_code_bb("1010101010101010101010101010101001010101101001011001101010100110", 0)
         self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(channel_rate * 56.48E-6 / 2 / channel_decimation, 0.25*(0.05*0.05), 0.5, 0.05, 0.005)
@@ -238,10 +238,10 @@ class elster_rx(grc_wxgui.top_block_gui):
         self.channel_rate = channel_rate
         self.digital_clock_recovery_mm_xx_0.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.wxgui_scopesink2_0.set_sample_rate(self.channel_rate/4)
-        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.wxgui_waterfallsink2_1.set_sample_rate(self.channel_rate)
         self.blocks_keep_one_in_n_0.set_n(self.samp_rate/self.channel_rate)
         self.analog_quadrature_demod_cf_0.set_gain(self.channel_rate/(115000*2*3.1416))
+        self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, 35000, 10000, firdes.WIN_HAMMING, 6.76))
 
     def get_channel_decimation(self):
         return self.channel_decimation
