@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Elster Rx
-# Generated: Sat Jan  4 12:30:15 2014
+# Generated: Sat Aug 23 20:04:08 2014
 ##################################################
 
 from gnuradio import analog
@@ -30,8 +30,6 @@ class elster_rx(grc_wxgui.top_block_gui):
 
     def __init__(self):
         grc_wxgui.top_block_gui.__init__(self, title="Elster Rx")
-        _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
-        self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
         ##################################################
         # Variables
@@ -154,18 +152,18 @@ class elster_rx(grc_wxgui.top_block_gui):
         	size=(window_size),
         )
         self.nb.GetPage(0).Add(self.wxgui_fftsink2_0.win)
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
-        self.osmosdr_source_0.set_sample_rate(samp_rate)
-        self.osmosdr_source_0.set_center_freq(center_freq, 0)
-        self.osmosdr_source_0.set_freq_corr(corr, 0)
-        self.osmosdr_source_0.set_dc_offset_mode(0, 0)
-        self.osmosdr_source_0.set_iq_balance_mode(0, 0)
-        self.osmosdr_source_0.set_gain_mode(0, 0)
-        self.osmosdr_source_0.set_gain(rx_gain, 0)
-        self.osmosdr_source_0.set_if_gain(20, 0)
-        self.osmosdr_source_0.set_bb_gain(20, 0)
-        self.osmosdr_source_0.set_antenna("", 0)
-        self.osmosdr_source_0.set_bandwidth(0, 0)
+        self.osmosdr_source_1 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
+        self.osmosdr_source_1.set_sample_rate(samp_rate)
+        self.osmosdr_source_1.set_center_freq(center_freq, 0)
+        self.osmosdr_source_1.set_freq_corr(corr, 0)
+        self.osmosdr_source_1.set_dc_offset_mode(0, 0)
+        self.osmosdr_source_1.set_iq_balance_mode(0, 0)
+        self.osmosdr_source_1.set_gain_mode(False, 0)
+        self.osmosdr_source_1.set_gain(rx_gain, 0)
+        self.osmosdr_source_1.set_if_gain(20, 0)
+        self.osmosdr_source_1.set_bb_gain(20, 0)
+        self.osmosdr_source_1.set_antenna("", 0)
+        self.osmosdr_source_1.set_bandwidth(0, 0)
           
         self.low_pass_filter_1 = filter.fir_filter_fff(channel_decimation, firdes.low_pass(
         	1, channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
@@ -174,28 +172,31 @@ class elster_rx(grc_wxgui.top_block_gui):
         self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(channel_rate * 56.48E-6 / 2 / channel_decimation, 0.25*(0.05*0.05), 0.5, 0.05, 0.005)
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
+        self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
         self.blocks_keep_one_in_n_0 = blocks.keep_one_in_n(gr.sizeof_gr_complex*1, samp_rate/channel_rate)
-        self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(-channel_rate/(115000*2*3.1416))
+        self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, -200000, 1, 0)
+        self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(channel_rate/(115000*2*3.1416))
 
         ##################################################
         # Connections
         ##################################################
         self.connect((self.blocks_uchar_to_float_0, 0), (self.wxgui_scopesink2_1, 0))
         self.connect((self.digital_correlate_access_code_bb_0, 0), (self.blocks_uchar_to_float_0, 0))
-        self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_correlate_access_code_bb_0, 0))
         self.connect((self.low_pass_filter_1, 0), (self.wxgui_scopesink2_0, 0))
         self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.low_pass_filter_1, 0))
         self.connect((self.low_pass_filter_1, 0), (self.digital_clock_recovery_mm_xx_0, 0))
         self.connect((self.blocks_keep_one_in_n_0, 0), (self.analog_quadrature_demod_cf_0, 0))
         self.connect((self.blocks_keep_one_in_n_0, 0), (self.wxgui_waterfallsink2_1, 0))
-        self.connect((self.osmosdr_source_0, 0), (self.wxgui_waterfallsink2_0, 0))
-        self.connect((self.osmosdr_source_0, 0), (self.wxgui_fftsink2_0, 0))
-        self.connect((self.osmosdr_source_0, 0), (self.blocks_keep_one_in_n_0, 0))
         self.connect((self.digital_binary_slicer_fb_0, 0), (self.elster_packetize_0, 0))
+        self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_correlate_access_code_bb_0, 0))
+        self.connect((self.osmosdr_source_1, 0), (self.wxgui_waterfallsink2_0, 0))
+        self.connect((self.osmosdr_source_1, 0), (self.wxgui_fftsink2_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_keep_one_in_n_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.osmosdr_source_1, 0), (self.blocks_multiply_xx_0, 0))
 
 
-# QT sink close method reimplementation
 
     def get_window_size(self):
         return self.window_size
@@ -208,17 +209,18 @@ class elster_rx(grc_wxgui.top_block_gui):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.blocks_keep_one_in_n_0.set_n(self.samp_rate/self.channel_rate)
-        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
         self.wxgui_waterfallsink2_0.set_sample_rate(self.samp_rate)
-        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
+        self.blocks_keep_one_in_n_0.set_n(self.samp_rate/self.channel_rate)
+        self.osmosdr_source_1.set_sample_rate(self.samp_rate)
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
 
     def get_rx_gain(self):
         return self.rx_gain
 
     def set_rx_gain(self, rx_gain):
         self.rx_gain = rx_gain
-        self.osmosdr_source_0.set_gain(self.rx_gain, 0)
+        self.osmosdr_source_1.set_gain(self.rx_gain, 0)
 
     def get_corr(self):
         return self.corr
@@ -227,19 +229,19 @@ class elster_rx(grc_wxgui.top_block_gui):
         self.corr = corr
         self._corr_slider.set_value(self.corr)
         self._corr_text_box.set_value(self.corr)
-        self.osmosdr_source_0.set_freq_corr(self.corr, 0)
+        self.osmosdr_source_1.set_freq_corr(self.corr, 0)
 
     def get_channel_rate(self):
         return self.channel_rate
 
     def set_channel_rate(self, channel_rate):
         self.channel_rate = channel_rate
-        self.blocks_keep_one_in_n_0.set_n(self.samp_rate/self.channel_rate)
-        self.analog_quadrature_demod_cf_0.set_gain(-self.channel_rate/(115000*2*3.1416))
         self.digital_clock_recovery_mm_xx_0.set_omega(self.channel_rate * 56.48E-6 / 2 / self.channel_decimation)
         self.wxgui_scopesink2_0.set_sample_rate(self.channel_rate/4)
         self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.channel_rate, 20000, 5000, firdes.WIN_HAMMING, 6.76))
         self.wxgui_waterfallsink2_1.set_sample_rate(self.channel_rate)
+        self.blocks_keep_one_in_n_0.set_n(self.samp_rate/self.channel_rate)
+        self.analog_quadrature_demod_cf_0.set_gain(self.channel_rate/(115000*2*3.1416))
 
     def get_channel_decimation(self):
         return self.channel_decimation
@@ -253,14 +255,14 @@ class elster_rx(grc_wxgui.top_block_gui):
 
     def set_center_freq(self, center_freq):
         self.center_freq = center_freq
-        self.wxgui_fftsink2_0.set_baseband_freq(self.center_freq)
         self.wxgui_waterfallsink2_0.set_baseband_freq(self.center_freq)
-        self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
+        self.wxgui_fftsink2_0.set_baseband_freq(self.center_freq)
+        self.osmosdr_source_1.set_center_freq(self.center_freq, 0)
 
 if __name__ == '__main__':
     import ctypes
-    import os
-    if os.name == 'posix':
+    import sys
+    if sys.platform.startswith('linux'):
         try:
             x11 = ctypes.cdll.LoadLibrary('libX11.so')
             x11.XInitThreads()
@@ -271,4 +273,3 @@ if __name__ == '__main__':
     tb = elster_rx()
     tb.Start(True)
     tb.Wait()
-
