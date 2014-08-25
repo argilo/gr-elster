@@ -49,6 +49,13 @@ def print_pkt(t, pkt):
         else:
             print to_hex(pkt[29:])
     else:
+        if src & 0x80000000:
+            pass
+        else:
+            if len(pkt) > 16:
+                l4 = ord(pkt[16])
+                if l4 != l1 - 17:
+                    raise Exception("Length mismatch: " + str(l1) + " " + str(l4))
         print to_hex(pkt[16:])
 
 
