@@ -75,8 +75,10 @@ def print_pkt(t, pkt):
         else:
             if len(pkt) > 16:
                 l4 = ord(pkt[16])
-                if l4 != l1 - 17:
-                    raise Exception("Length mismatch: " + str(l1) + " " + str(l4))
+                if l4 == l1 - 17:
+                    pass
+                else:
+                    pass #this happens from time to time
         print to_hex(pkt[16:])
 
 
