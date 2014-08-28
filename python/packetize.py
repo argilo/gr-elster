@@ -89,7 +89,7 @@ class packetize(gr.basic_block):
 
         bytestring = ''.join(["0x{:02x}".format(int(byte))[2:4] for byte in bytes])
         bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:26] + ' ' + bytestring[26:32] + ' ' + bytestring[32:-4] + ' ' + bytestring[-4:]
-        print(datetime.datetime.now().strftime("%H:%M:%S.%f") + '  ' + bytestring)
+        print(datetime.datetime.now().strftime("%H:%M:%S.%f") + ' ' + "{0:02}".format(channel) + '  ' + bytestring)
         if length == 0x44:
             # This packet probably contains meter readings!
             print
