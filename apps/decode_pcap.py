@@ -82,30 +82,29 @@ def print_pkt(t, pkt):
         print to_hex(pkt[16:])
 
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    sys.stderr.write("Usage: decode_pcap.py input_file\n");
+if len(sys.argv) < 2:
+    sys.stderr.write("Usage: decode_pcap.py input_file...\n");
     sys.exit(1)
 
-f = open(filename,"rb")
-magic = f.read(4)
+for filename in sys.argv[1:]:
+    f = open(filename,"rb")
+    magic = f.read(4)
 
-if magic == "\xa1\xb2\xc3\xd4": #big endian
-    endian = ">"
-elif  magic == "\xd4\xc3\xb2\xa1": #little endian
-    endian = "<"
-else:
-    raise Exception("Not a pcap capture file (bad magic)")
-hdr = f.read(20)
-if len(hdr)<20:
-    raise Exception("Invalid pcap file (too short)")
-vermaj,vermin,tz,sig,snaplen,linktype = struct.unpack(endian+"HHIIII",hdr)
+    if magic == "\xa1\xb2\xc3\xd4": #big endian
+        endian = ">"
+    elif  magic == "\xd4\xc3\xb2\xa1": #little endian
+        endian = "<"
+    else:
+        raise Exception("Not a pcap capture file (bad magic)")
+    hdr = f.read(20)
+    if len(hdr)<20:
+        raise Exception("Invalid pcap file (too short)")
+    vermaj,vermin,tz,sig,snaplen,linktype = struct.unpack(endian+"HHIIII",hdr)
 
-while True:
-    hdr = f.read(16)
-    if len(hdr) < 16:
-        break
-    sec,usec,caplen,wirelen = struct.unpack(endian+"IIII", hdr)
-    pkt = f.read(caplen)
-    print_pkt(sec + usec / 1000000., pkt)
+    while True:
+        hdr = f.read(16)
+        if len(hdr) < 16:
+            break
+        sec,usec,caplen,wirelen = struct.unpack(endian+"IIII", hdr)
+        pkt = f.read(caplen)
+        print_pkt(sec + usec / 1000000., pkt)
