@@ -131,4 +131,4 @@ for filename in sys.argv[1:]:
 print
 
 for meter in sorted(meter_readings.keys()):
-    print "Readings for LAN ID " + str(meter) + ": " + str(len([reading for reading in meter_readings[meter] if reading >= 0]))
+    print "Readings for LAN ID " + str(meter) + ": " + str([reading / 100.0 for reading in meter_readings[meter] if reading >= 0])
