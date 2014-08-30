@@ -24,12 +24,20 @@ import struct
 import time
 import datetime
 
+meter_first_hour = {}
+meter_last_hour = {}
 meter_readings = {}
 
 def add_hourly(meter, last_hour, readings):
     first_hour = last_hour - len(readings) + 1
     if meter not in meter_readings:
+        meter_first_hour[meter] = first_hour
+        meter_last_hour[meter] = last_hour
         meter_readings[meter] = [-1] * 65536
+    if (first_hour - meter_first_hour[meter]) % 65536 > 32768:
+        meter_first_hour[meter] = first_hour
+    if (last_hour - meter_last_hour[meter]) % 65536 < 32768:
+        meter_last_hour[meter] = last_hour
     for i in range(len(readings)):
         meter_readings[meter][i + first_hour] = readings[i]
 
@@ -131,4 +139,9 @@ for filename in sys.argv[1:]:
 print
 
 for meter in sorted(meter_readings.keys()):
-    print "Readings for LAN ID " + str(meter) + ": " + str([reading / 100.0 for reading in meter_readings[meter] if reading >= 0])
+    print "Readings for LAN ID " + str(meter) + ":",
+    if meter_first_hour[meter] > meter_last_hour[meter]:
+        meter_last_hour[meter] += 65536
+    for hour in range(meter_first_hour[meter], meter_last_hour[meter] + 1):
+        print "{0:5.2f}".format(meter_readings[meter][hour % 65536] / 100.0) if meter_readings[meter][hour % 65536] >= 0 else "   ? ",
+    print
