@@ -87,7 +87,27 @@ def print_pkt(t, pkt):
             print to_hex(pkt[29:])
     else:
         if src & 0x80000000:
-            print "path=" + to_hex(pkt[16:24]) + " " + to_hex(pkt[24:])
+            print "path=" + to_hex(pkt[16:24]),
+            if ord(pkt[24]) == 0x40:
+                print to_hex(pkt[24:28]),
+                l4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
+                print "len={0:02x} {1:02x} cmd={2:02x} cnt={3:02x}".format(l4, unk12, cmd, cnt),
+
+                if cmd == 0xce: # fetch hourly usage data, every 6 hours
+                    unk13, hour = struct.unpack(">BH", pkt[32:])
+                    print "{0:02x} first_hour={1:05}".format(unk13, hour)
+                elif cmd == 0x22: # just an acknowledgement
+                    print to_hex(pkt[32:])
+                elif cmd == 0x23: # path building stuff? every 6 hours
+                    print to_hex(pkt[32:])
+                elif cmd == 0x28: # just an acknowledgement
+                    print to_hex(pkt[32:])
+                elif cmd == 0x6a:
+                    print to_hex(pkt[32:])
+                else: # unknown command
+                    print to_hex(pkt[32:])
+            else:
+                print to_hex(pkt[24:])
         else:
             if len(pkt) > 16:
                 l4 = ord(pkt[16])
@@ -96,7 +116,7 @@ def print_pkt(t, pkt):
                         cmd = ord(pkt[18])
                         if cmd == 0xce: # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
-                            print "len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} {6:05} {7:05} n_hour={8:02}".format(l4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:])
+                            print "len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} cur_hour={6:05} last_hour={7:05} n_hour={8:02}".format(l4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:])
                             add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
                             # TODO: Get total meter reading
                         elif cmd == 0x22: # just an acknowledgement
