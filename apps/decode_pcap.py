@@ -105,14 +105,17 @@ def print_pkt(t, pkt):
                         elif cmd == 0x23: # path building stuff? every 6 hours
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print "len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:])
+                            # TODO: Parse the rest
                         elif cmd == 0x28: # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print "len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:])
                         elif cmd == 0x6a:
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print "len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:])
+                            # TODO: Parse the rest
                         else:
                             print "todo=" + to_hex(pkt[16:])
+                            # TODO: Investigate these
                     else:
                         print "len={0:02x}".format(l4) + " data=" + to_hex(pkt[17:])
                 else:
