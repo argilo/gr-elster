@@ -77,8 +77,8 @@ def print_pkt(t, pkt):
         print "rpt=" + to_hex(pkt[13:14]) + " " + to_hex(pkt[14:16]),
 
     if dst == 0: # flood broadcast message
-        unk4, unk5, unk6, unk7, addr, unk8, l2 = struct.unpack(">BBBBIIB", pkt[16:29])
-        print "{0:02x}{1:02x}{2:02x}{3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, unk6, unk7, addr, unk8, l2),
+        unk4, unk5, hop, unk7, addr, unk8, l2 = struct.unpack(">BBBBIIB", pkt[16:29])
+        print "{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, l2),
         if l2 == 0:
             print to_hex(pkt[29:33]),
             unk9, l3 = struct.unpack(">BB", pkt[33:35])
@@ -103,9 +103,9 @@ def print_pkt(t, pkt):
                 elif cmd == 0x22:
                     print to_hex(pkt[32:])
                 elif cmd == 0x23: # path building stuff? every 6 hours
-                    unk14, unk15, unk16, path1, path2, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
-                    print "{0:02x} {1:02x} {2:02x} path1={3:02x} path2={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
-                            unk14, unk15, unk16, path1, path2, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29),
+                    unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
+                    print "{0:02x} {1:02x} {2:02x} id={3:02x} par_id={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
+                            unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29),
                     if l4 == 0x20:
                         print "{0:02x}".format(ord(pkt[58])),
                         print "date=" + str(decode_date(pkt[59:61]))
