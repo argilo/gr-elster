@@ -28,6 +28,10 @@ meter_first_hour = {}
 meter_last_hour = {}
 meter_readings = {}
 
+meter_parents = {}
+meter_gatekeepers = {}
+meter_levels = {}
+
 def add_hourly(meter, last_hour, readings):
     first_hour = last_hour - len(readings) + 1
     if meter not in meter_readings:
@@ -99,7 +103,27 @@ def print_pkt(t, pkt):
                 elif cmd == 0x22:
                     print to_hex(pkt[32:])
                 elif cmd == 0x23: # path building stuff? every 6 hours
-                    print to_hex(pkt[32:])
+                    unk14, unk15, unk16, path1, path2, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
+                    print "{0:02x} {1:02x} {2:02x} path1={3:02x} path2={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
+                            unk14, unk15, unk16, path1, path2, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29),
+                    if l4 == 0x20:
+                        print "{0:02x}".format(ord(pkt[58])),
+                        print "date=" + str(decode_date(pkt[59:61]))
+                    else:
+                        print
+
+                    # Prepare graph edges
+                    meter_parents[dst] = parent
+                    if level == 2:
+                        meter_parents[parent] = src # Fill this in now, in case we don't hear from parent
+
+                    meter_gatekeepers[dst] = src
+                    if level >= 2:
+                        meter_gatekeepers[parent] = src # Fill this in now, in case we don't hear from parent
+
+                    meter_levels[dst] = level
+                    meter_levels[parent] = level - 1
+                    meter_levels[src] = 0
                 elif cmd == 0x28:
                     print to_hex(pkt[32:])
                 elif cmd == 0x6a:
@@ -185,3 +209,29 @@ for meter in sorted(meter_readings.keys()):
     for hour in range(meter_first_hour[meter], meter_last_hour[meter] + 1):
         print "{0:5.2f}".format(meter_readings[meter][hour % 65536] / 100.0) if meter_readings[meter][hour % 65536] >= 0 else "   ? ",
     print
+
+
+import pygraphviz
+
+G = pygraphviz.AGraph(directed=True, ranksep=2.0, rankdir="RL")
+
+for meter, parent in meter_parents.iteritems():
+    meter_name = "{0:08x}".format(meter)
+    parent_name = "{0:08x}".format(parent)
+    if parent & 0x80000000:
+        G.add_node(parent_name, color="red", rank="max")
+    G.add_edge(meter_name, parent_name)
+
+    if (meter_levels[parent] >= 2) and (parent not in meter_parents):
+        gatekeeper_name = "{0:08x}".format(meter_gatekeepers[meter])
+
+        G.add_node(gatekeeper_name, color="red", rank="max")
+        G.add_node("Level 1\n(" + gatekeeper_name + ")", color="gray")
+        G.add_edge("Level 1\n(" + gatekeeper_name + ")", gatekeeper_name)
+        for x in range(1, meter_levels[parent] - 1):
+            G.add_node("Level " + str(x+1) + "\n(" + gatekeeper_name + ")", color="gray")
+            G.add_edge("Level " + str(x+1) + "\n(" + gatekeeper_name + ")", "Level " + str(x) + "\n(" + gatekeeper_name + ")")
+        G.add_edge(parent_name, "Level " + str(meter_levels[parent] - 1) + "\n(" + gatekeeper_name + ")")
+
+G.layout(prog="dot")
+G.draw("mesh.pdf")
