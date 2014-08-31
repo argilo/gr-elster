@@ -96,11 +96,11 @@ def print_pkt(t, pkt):
                 if cmd == 0xce: # fetch hourly usage data, every 6 hours
                     unk13, hour = struct.unpack(">BH", pkt[32:])
                     print "{0:02x} first_hour={1:05}".format(unk13, hour)
-                elif cmd == 0x22: # just an acknowledgement
+                elif cmd == 0x22:
                     print to_hex(pkt[32:])
                 elif cmd == 0x23: # path building stuff? every 6 hours
                     print to_hex(pkt[32:])
-                elif cmd == 0x28: # just an acknowledgement
+                elif cmd == 0x28:
                     print to_hex(pkt[32:])
                 elif cmd == 0x6a:
                     print to_hex(pkt[32:])
