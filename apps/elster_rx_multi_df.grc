@@ -1,163 +1,59 @@
 <?xml version='1.0' encoding='ASCII'?>
-<?grc format='1' created='3.7.6'?>
 <flow_graph>
-  <timestamp>Mon Sep  1 09:52:48 2014</timestamp>
+  <timestamp>Mon Sep  1 11:53:42 2014</timestamp>
   <block>
-    <key>variable</key>
+    <key>options</key>
     <param>
       <key>id</key>
-      <value>ch_filt_trans</value>
+      <value>elster_rx_multi_df</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>value</key>
-      <value>10000</value>
-    </param>
-    <param>
-      <key>alias</key>
+      <key>title</key>
       <value></value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(91, 679)</value>
+      <key>author</key>
+      <value></value>
     </param>
     <param>
-      <key>_rotation</key>
+      <key>description</key>
+      <value></value>
+    </param>
+    <param>
+      <key>window_size</key>
+      <value>1280, 1600</value>
+    </param>
+    <param>
+      <key>generate_options</key>
+      <value>wx_gui</value>
+    </param>
+    <param>
+      <key>category</key>
+      <value>Custom</value>
+    </param>
+    <param>
+      <key>run_options</key>
+      <value>prompt</value>
+    </param>
+    <param>
+      <key>run</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>max_nouts</key>
       <value>0</value>
     </param>
-  </block>
-  <block>
-    <key>variable</key>
     <param>
-      <key>id</key>
-      <value>ch_filt_cut</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>45000</value>
-    </param>
-    <param>
-      <key>alias</key>
+      <key>realtime_scheduling</key>
       <value></value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(92, 607)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>samp_rate</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>2400000</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(10, 170)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>channel_rate</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>400000</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(11, 101)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>channel_decimation</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>4</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(10, 387)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>window_size</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>(800,600)</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(155, 389)</value>
+      <value>(10, 10)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -179,10 +75,6 @@
       <value>904600000</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>_coordinate</key>
       <value>(10, 242)</value>
     </param>
@@ -195,7 +87,7 @@
     <key>variable</key>
     <param>
       <key>id</key>
-      <value>rx_gain</value>
+      <value>window_size</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -203,15 +95,126 @@
     </param>
     <param>
       <key>value</key>
-      <value>45</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
+      <value>(800,600)</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(11, 319)</value>
+      <value>(155, 389)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>channel_decimation</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>4</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(10, 387)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>channel_rate</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>400000</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(11, 101)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>samp_rate</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>2400000</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(10, 170)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>ch_filt_cut</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>45000</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(92, 607)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>ch_filt_trans</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>10000</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(91, 679)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -253,10 +256,6 @@
       <value>0</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -290,10 +289,6 @@
     <param>
       <key>gain</key>
       <value>channel_rate/(115000*2*3.1416)</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -351,10 +346,6 @@
       <value>0.005</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -384,10 +375,6 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -445,10 +432,6 @@
       <value>0.005</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -502,10 +485,6 @@
     <param>
       <key>omega_relative_limit</key>
       <value>0.005</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -563,10 +542,6 @@
       <value>0.005</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -620,10 +595,6 @@
     <param>
       <key>omega_relative_limit</key>
       <value>0.005</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -681,10 +652,6 @@
       <value>0.005</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -718,10 +685,6 @@
     <param>
       <key>gain</key>
       <value>channel_rate/(115000*2*3.1416)</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -759,10 +722,6 @@
       <value>channel_rate/(115000*2*3.1416)</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -796,10 +755,6 @@
     <param>
       <key>gain</key>
       <value>channel_rate/(115000*2*3.1416)</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -837,10 +792,6 @@
       <value>channel_rate/(115000*2*3.1416)</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -870,10 +821,6 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -907,10 +854,6 @@
       <value>True</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -942,10 +885,6 @@
       <value>True</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -975,10 +914,6 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1014,10 +949,6 @@
     <param>
       <key>num_inputs</key>
       <value>6</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1105,10 +1036,6 @@
     <param>
       <key>freqvar</key>
       <value>None</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1206,10 +1133,6 @@
       <value>None</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1253,14 +1176,6 @@
       <value>[]</value>
     </param>
     <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1290,10 +1205,6 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1329,10 +1240,6 @@
     <param>
       <key>gain</key>
       <value>channel_rate/(115000*2*3.1416)</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1402,10 +1309,6 @@
       <value>6.76</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1471,10 +1374,6 @@
     <param>
       <key>beta</key>
       <value>6.76</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1544,10 +1443,6 @@
       <value>6.76</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1613,10 +1508,6 @@
     <param>
       <key>beta</key>
       <value>6.76</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1686,10 +1577,6 @@
       <value>6.76</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1757,10 +1644,6 @@
       <value>6.76</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1775,65 +1658,6 @@
     <param>
       <key>_coordinate</key>
       <value>(576, 1332)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_slider</key>
-    <param>
-      <key>id</key>
-      <value>corr</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Freq. correction</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>min</key>
-      <value>-100</value>
-    </param>
-    <param>
-      <key>max</key>
-      <value>100</value>
-    </param>
-    <param>
-      <key>num_steps</key>
-      <value>200</value>
-    </param>
-    <param>
-      <key>style</key>
-      <value>wx.SL_HORIZONTAL</value>
-    </param>
-    <param>
-      <key>converver</key>
-      <value>float_converter</value>
-    </param>
-    <param>
-      <key>grid_pos</key>
-      <value></value>
-    </param>
-    <param>
-      <key>notebook</key>
-      <value></value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(137, 223)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1861,10 +1685,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -1910,10 +1730,6 @@
       <value>1</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -1947,10 +1763,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -2002,10 +1814,6 @@
     <param>
       <key>fbw</key>
       <value>0</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -2095,10 +1903,6 @@
       <value>Counts</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -2138,10 +1942,6 @@
       <value></value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>_coordinate</key>
       <value>(12, 472)</value>
     </param>
@@ -2171,10 +1971,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -2222,10 +2018,6 @@
     <param>
       <key>num_inputs</key>
       <value>1</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -2467,10 +2259,6 @@
       <value>0</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -2522,10 +2310,6 @@
       <value>False</value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
       <key>affinity</key>
       <value></value>
     </param>
@@ -2539,62 +2323,109 @@
     </param>
   </block>
   <block>
-    <key>options</key>
+    <key>variable_slider</key>
     <param>
       <key>id</key>
-      <value>elster_rx_multi_df</value>
+      <value>corr</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>title</key>
-      <value></value>
+      <key>label</key>
+      <value>Freq. correction</value>
     </param>
     <param>
-      <key>author</key>
-      <value></value>
-    </param>
-    <param>
-      <key>description</key>
-      <value></value>
-    </param>
-    <param>
-      <key>window_size</key>
-      <value>1280, 1600</value>
-    </param>
-    <param>
-      <key>generate_options</key>
-      <value>wx_gui</value>
-    </param>
-    <param>
-      <key>category</key>
-      <value>Custom</value>
-    </param>
-    <param>
-      <key>run_options</key>
-      <value>prompt</value>
-    </param>
-    <param>
-      <key>run</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>max_nouts</key>
+      <key>value</key>
       <value>0</value>
     </param>
     <param>
-      <key>realtime_scheduling</key>
+      <key>min</key>
+      <value>-100</value>
+    </param>
+    <param>
+      <key>max</key>
+      <value>100</value>
+    </param>
+    <param>
+      <key>num_steps</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.SL_HORIZONTAL</value>
+    </param>
+    <param>
+      <key>converver</key>
+      <value>float_converter</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
       <value></value>
     </param>
     <param>
-      <key>alias</key>
+      <key>notebook</key>
       <value></value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(10, 10)</value>
+      <value>(114, 241)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_slider</key>
+    <param>
+      <key>id</key>
+      <value>rx_gain</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>25</value>
+    </param>
+    <param>
+      <key>min</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>max</key>
+      <value>49.6</value>
+    </param>
+    <param>
+      <key>num_steps</key>
+      <value>124</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.SL_HORIZONTAL</value>
+    </param>
+    <param>
+      <key>converver</key>
+      <value>float_converter</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
+      <value></value>
+    </param>
+    <param>
+      <key>notebook</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(251, 250)</value>
     </param>
     <param>
       <key>_rotation</key>
