@@ -23,6 +23,7 @@ import datetime
 import os.path
 import struct
 import time
+import pygame
 from gnuradio import gr
 
 class packetize(gr.basic_block):
@@ -47,6 +48,10 @@ class packetize(gr.basic_block):
         self.linktype = 147
         self.f.write(struct.pack("IHHIIII", 0xa1b2c3d4L, 2, 4, 0, 0, 32767, self.linktype))
         self.f.flush()
+
+        pygame.init()
+        pygame.mixer.init(frequency=48000, size=-16, channels=2, buffer=4096)
+        pygame.mixer.music.load("beep.wav")
 
     def __del__(self):
         self.f.close()
@@ -88,6 +93,10 @@ class packetize(gr.basic_block):
         self.f.flush()
 
         bytestring = ''.join(["0x{:02x}".format(int(byte))[2:4] for byte in bytes])
+
+        if bytestring[4:6] == "80" and bytestring[12:20] != "00000000" and bytestring[32:34] == "00":
+            pygame.mixer.music.play()
+
         bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:26] + ' ' + bytestring[26:32] + ' ' + bytestring[32:-4] + ' ' + bytestring[-4:]
         print(datetime.datetime.now().strftime("%H:%M:%S.%f") + ' ' + "{0:02}".format(channel) + '  ' + bytestring)
         if length == 0x44:
