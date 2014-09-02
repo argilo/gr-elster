@@ -51,7 +51,7 @@ class packetize(gr.basic_block):
 
         pygame.init()
         pygame.mixer.init(frequency=48000, size=-16, channels=2, buffer=4096)
-        pygame.mixer.music.load("beep.wav")
+        pygame.mixer.music.load("/home/oarc/git/gr-elster/apps/beep.wav")
 
     def __del__(self):
         self.f.close()
