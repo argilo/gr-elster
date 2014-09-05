@@ -194,11 +194,7 @@ for filename in sys.argv[1:]:
             break
         sec,usec,caplen,wirelen = struct.unpack(endian+"IIII", hdr)
         pkt = f.read(caplen)
-        if pkt in packets:
-            packets[pkt] += 1
-        else:
-            packets[pkt] = 1
-            print_pkt(sec + usec / 1000000., pkt)
+        print_pkt(sec + usec / 1000000., pkt)
 
 print
 
