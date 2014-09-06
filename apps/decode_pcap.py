@@ -70,13 +70,13 @@ def print_pkt(t, pkt):
     print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)),
     l1, flag1, src, dst, unk1, unk2, unk3 = struct.unpack(">BBIIBBB", pkt[0:13])
     print "len={0:02x} flag={1:02x} src={2:08x} dst={3:08x} {4:02x}{5:02x}{6:02x}".format(l1, flag1, src, dst, unk1, unk2, unk3),
-    if (src & 0x80000000) or (dst == 0):
+    if (src & 0x80000000) or (dst == 0 and l1 >= 35):
         ts_h, ts_m, ts_s = decode_ts(pkt[13:16])
         print "ts={0:02}:{1:02}:{2:06.3f}".format(ts_h, ts_m, ts_s),
     else:
         print "rpt=" + to_hex(pkt[13:14]) + " " + to_hex(pkt[14:16]),
 
-    if dst == 0: # flood broadcast message
+    if dst == 0 and l1 >= 35: # flood broadcast message
         unk4, unk5, hop, unk7, addr, unk8, l2 = struct.unpack(">BBBBIIB", pkt[16:29])
         print "{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, l2),
         if l2 == 0:
