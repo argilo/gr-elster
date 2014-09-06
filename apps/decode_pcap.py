@@ -87,6 +87,12 @@ def print_pkt(t, pkt):
         elif l2 == 6:
             print to_hex(pkt[29:33]),
             print "date=" + str(decode_date(pkt[33:35]))
+        elif l2 == 0x27:
+            print to_hex(pkt[29:33]),
+            for x in range(7): # 7 meter numbers (with first bit sometimes set to 1) followed by number 0x01-0x45
+                print to_hex(pkt[33 + 5*x:37 + 5*x]),
+                print to_hex(pkt[37 + 5*x:38 + 5*x]),
+            print
         else:
             print to_hex(pkt[29:])
     else:
