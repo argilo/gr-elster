@@ -38,23 +38,21 @@ decodes those packets containing meter readings as follows:
   Meter reading for meter #XXXXXXX: YYYYY kWh
   Hourly readings: Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ
 
+It also stores packets to a pcap file (beginning with elster-001.pcap)
+which can then be decoded using the decode_pcap.py script.
+
 In my area, usage data is transmitted every six hours (beginning at
 05:30, 11:30, 17:30 and 23:30 UTC), so it may be necessary to wait a
 while before such packets will appear.
 
-The flow graph in /apps/elster_rx.grc is intended for use with an RTL-SDR
-dongle, but can likely be used with other SDR receivers as well.  It
-receives six out of the 25 frequency-hopping channels used in my area,
+The flow graph in /apps/elster_rx_multi.grc is intended for use with an
+RTL-SDR dongle, but can likely be used with other SDR receivers as well.
+It receives six out of the 25 frequency-hopping channels used in my area,
 but that should be sufficient to receive most traffic since packets are
 repeated a few times on different channels.  The number of simultaneous
 channels is limited by the bandwidth of the SDR.  An RTL-SDR dongle can
 reliably receive up to about 2.4 MHz, which is sufficient for six 400-kHz
 channels.
-
-To simplify multi-channel reception, the flow graph intentionally aliases
-together the six channels (centred at 903.6, 904.0, 904.4, 904.8, 905.2,
-and 905.6 MHz) using a "Keep 1 in N" block.  This works fine except when
-two channels are used at once, but that rarely occurs.
 
 For best reception with an RTL-SDR dongle, set the frequency correction
 slider to the appropriate value (in PPM) for your particular tuner.

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <block>
-  <name>packetize</name>
+  <name>Packetize</name>
   <key>elster_packetize</key>
-  <category>elster</category>
+  <category>Elster</category>
   <import>import elster</import>
   <make>elster.packetize($num_inputs)</make>
 
