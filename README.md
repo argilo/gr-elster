@@ -1,3 +1,4 @@
+```
 # Copyright 2013-2014 Clayton Smith
 #
 # This file is part of gr-elster
@@ -16,11 +17,12 @@
 # along with gr-elster; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
+```
 
 gr-elster
 =========
 
-Author: Clayton Smith
+Author: Clayton Smith  
 Email: <argilo@gmail.com>
 
 This GNU Radio block and sample flow graph are intended to receive
@@ -35,8 +37,8 @@ packets, and can display meter readings and hourly electricity usage
 data.  When running, it dumps all packets to the console in hex, and
 decodes those packets containing meter readings as follows:
 
-  Meter reading for meter #XXXXXXX: YYYYY kWh
-  Hourly readings: Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ
+    Meter reading for meter #XXXXXXX: YYYYY kWh
+    Hourly readings: Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ, Z.ZZ
 
 It also stores packets to a pcap file (beginning with elster-001.pcap)
 which can then be decoded using the decode_pcap.py script.
