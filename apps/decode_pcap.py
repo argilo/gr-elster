@@ -70,26 +70,26 @@ def decode_date(date_bytes):
 
 
 def to_hex(in_bytes):
-    return "".join(["{0:02x}".format(ord(byte)) for byte in in_bytes])
+    return "".join(["{:02x}".format(ord(byte)) for byte in in_bytes])
 
 
 def print_pkt(timestamp, pkt):
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp)), end=" ")
     len1, flag1, src, dst, unk1, unk2, unk3 = struct.unpack(">BBIIBBB", pkt[0:13])
-    print("len={0:02x} flag={1:02x} src={2:08x} dst={3:08x} {4:02x}{5:02x}{6:02x}".format(len1, flag1, src, dst, unk1, unk2, unk3), end=" ")
+    print("len={:02x} flag={:02x} src={:08x} dst={:08x} {:02x}{:02x}{:02x}".format(len1, flag1, src, dst, unk1, unk2, unk3), end=" ")
     if (src & 0x80000000) or (dst == 0 and len1 >= 35):
         ts_h, ts_m, ts_s = decode_ts(pkt[13:16])
-        print("ts={0:02}:{1:02}:{2:06.3f}".format(ts_h, ts_m, ts_s), end=" ")
+        print("ts={:02}:{:02}:{:06.3f}".format(ts_h, ts_m, ts_s), end=" ")
     else:
         print("rpt=" + to_hex(pkt[13:14]) + " " + to_hex(pkt[14:16]), end=" ")
 
     if dst == 0 and len1 >= 35:  # flood broadcast message
         unk4, unk5, hop, unk7, addr, unk8, len2 = struct.unpack(">BBBBIIB", pkt[16:29])
-        print("{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, len2), end=" ")
+        print("{:02x}{:02x} hop={:02x} {:02x} addr={:08x} {:08x} len={:02x}".format(unk4, unk5, hop, unk7, addr, unk8, len2), end=" ")
         if len2 == 0:
             print(to_hex(pkt[29:33]), end=" ")
             unk9, len3 = struct.unpack(">BB", pkt[33:35])
-            print("{0:02x}".format(unk9), end=" ")
+            print("{:02x}".format(unk9), end=" ")
             print("next_" + str(len3) + "_days=" + to_hex(pkt[35:]))
         elif len2 == 6:
             print(to_hex(pkt[29:33]), end=" ")
@@ -108,19 +108,19 @@ def print_pkt(timestamp, pkt):
             if ord(pkt[24]) == 0x40:
                 print(to_hex(pkt[24:28]), end=" ")
                 len4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
-                print("len={0:02x} {1:02x} cmd={2:02x} cnt={3:02x}".format(len4, unk12, cmd, cnt), end=" ")
+                print("len={:02x} {:02x} cmd={:02x} cnt={:02x}".format(len4, unk12, cmd, cnt), end=" ")
 
                 if cmd == 0xce:  # fetch hourly usage data, every 6 hours
                     unk13, hour = struct.unpack(">BH", pkt[32:])
-                    print("{0:02x} first_hour={1:05}".format(unk13, hour))
+                    print("{:02x} first_hour={:05}".format(unk13, hour))
                 elif cmd == 0x22:
                     print(to_hex(pkt[32:]))
                 elif cmd == 0x23:  # path building stuff? every 6 hours
                     unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
-                    print("{0:02x} {1:02x} {2:02x} id={3:02x} par_id={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
+                    print("{:02x} {:02x} {:02x} id={:02x} par_id={:02x} parent={:08x} {:02x} #child={} {:02x} lvl={} {:02x}{:02x}{:02x} {:02x} {:02x} {:02x} {:04x} {:08x} {:02x}".format(
                         unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
                     if len4 == 0x20:
-                        print("{0:02x}".format(ord(pkt[58])), end=" ")
+                        print("{:02x}".format(ord(pkt[58])), end=" ")
                         print("date=" + str(decode_date(pkt[59:61])))
                     else:
                         print()
@@ -153,28 +153,28 @@ def print_pkt(timestamp, pkt):
                         cmd = ord(pkt[18])
                         if cmd == 0xce:  # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} cur_hour={6:05} last_hour={7:05} n_hour={8:02}".format(len4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))
+                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x} {:02x} {:02x} cur_hour={:05} last_hour={:05} n_hour={:02}".format(len4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))
                             add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
                             # TODO: Get total meter reading
                         elif cmd == 0x22:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                         elif cmd == 0x23:  # path building stuff? every 6 hours
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                             # TODO: Parse the rest
                         elif cmd == 0x28:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                         elif cmd == 0x6a:
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                             # TODO: Parse the rest
                         else:
                             print("todo=" + to_hex(pkt[16:]))
                             # TODO: Investigate these
                     else:
-                        print("len={0:02x}".format(len4) + " data=" + to_hex(pkt[17:]))
+                        print("len={:02x}".format(len4) + " data=" + to_hex(pkt[17:]))
                 else:
                     print("weird=" + to_hex(pkt[16:]))  # this happens from time to time
             else:
@@ -216,21 +216,21 @@ for meter in sorted(meter_readings.keys()):
     if meter_first_hour[meter] > meter_last_hour[meter]:
         meter_last_hour[meter] += 65536
     for hour in range(meter_first_hour[meter], meter_last_hour[meter] + 1):
-        print("{0:5.2f}".format(meter_readings[meter][hour % 65536] / 100) if meter_readings[meter][hour % 65536] >= 0 else "   ? ", end=" ")
+        print("{:5.2f}".format(meter_readings[meter][hour % 65536] / 100) if meter_readings[meter][hour % 65536] >= 0 else "   ? ", end=" ")
     print()
 
 
 G = pygraphviz.AGraph(directed=True, ranksep=2.0, rankdir="RL")
 
 for meter, parent in meter_parents.items():
-    meter_name = "{0:08x}".format(meter)
-    parent_name = "{0:08x}".format(parent)
+    meter_name = "{:08x}".format(meter)
+    parent_name = "{:08x}".format(parent)
     if parent & 0x80000000:
         G.add_node(parent_name, color="red", rank="max")
     G.add_edge(meter_name, parent_name)
 
     if (meter_levels[parent] >= 2) and (parent not in meter_parents):
-        gatekeeper_name = "{0:08x}".format(meter_gatekeepers[meter])
+        gatekeeper_name = "{:08x}".format(meter_gatekeepers[meter])
 
         G.add_node(gatekeeper_name, color="red", rank="max")
         G.add_node("Level 1\n(" + gatekeeper_name + ")", color="gray")
