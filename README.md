@@ -1,5 +1,5 @@
 ```
-# Copyright 2013-2014 Clayton Smith
+# Copyright 2013, 2014, 2019 Clayton Smith
 #
 # This file is part of gr-elster
 #
