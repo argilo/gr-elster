@@ -2,7 +2,7 @@
 <block>
   <name>Packetize</name>
   <key>elster_packetize</key>
-  <category>Elster</category>
+  <category>[Elster]</category>
   <import>import elster</import>
   <make>elster.packetize($num_inputs)</make>
 
