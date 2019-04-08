@@ -20,10 +20,11 @@
 # Boston, MA 02110-1301, USA.
 
 from __future__ import division, print_function, unicode_literals
-import sys
-import struct
-import time
 import datetime
+import struct
+import sys
+import time
+import pygraphviz
 
 meter_first_hour = {}
 meter_last_hour = {}
@@ -32,6 +33,7 @@ meter_readings = {}
 meter_parents = {}
 meter_gatekeepers = {}
 meter_levels = {}
+
 
 def add_hourly(meter, last_hour, readings):
     first_hour = last_hour - len(readings) + 1
@@ -43,11 +45,12 @@ def add_hourly(meter, last_hour, readings):
         meter_first_hour[meter] = first_hour
     if (last_hour - meter_last_hour[meter]) % 65536 < 32768:
         meter_last_hour[meter] = last_hour
-    for i in range(len(readings)):
-        meter_readings[meter][i + first_hour] = readings[i]
+    for i, reading in enumerate(readings):
+        meter_readings[meter][i + first_hour] = reading
 
-def decode_ts(bytes):
-    ts1, ts2, ts3 = struct.unpack(">BBB", bytes)
+
+def decode_ts(ts_bytes):
+    ts1, ts2, ts3 = struct.unpack(">BBB", ts_bytes)
     ts = ((ts1 << 16) + (ts2 << 8) + ts3)
     ts_h = ts // (128 * 3600)
     ts -= ts_h * 128 * 3600
@@ -56,16 +59,19 @@ def decode_ts(bytes):
     ts_s = ts / 128
     return ts_h, ts_m, ts_s
 
-def decode_date(bytes):
-    short, = struct.unpack(">H", bytes)
+
+def decode_date(date_bytes):
+    short, = struct.unpack(">H", date_bytes)
     year = 2000 + (short >> 9)
     days = short & 0x1FF
     date = datetime.date(year, 1, 1)
     delta = datetime.timedelta(days)
     return date + delta
 
-def to_hex(bytes):
-    return "".join(["{0:02x}".format(ord(byte)) for byte in bytes])
+
+def to_hex(in_bytes):
+    return "".join(["{0:02x}".format(ord(byte)) for byte in in_bytes])
+
 
 def print_pkt(t, pkt):
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)), end=" ")
@@ -77,7 +83,7 @@ def print_pkt(t, pkt):
     else:
         print("rpt=" + to_hex(pkt[13:14]) + " " + to_hex(pkt[14:16]), end=" ")
 
-    if dst == 0 and l1 >= 35: # flood broadcast message
+    if dst == 0 and l1 >= 35:  # flood broadcast message
         unk4, unk5, hop, unk7, addr, unk8, l2 = struct.unpack(">BBBBIIB", pkt[16:29])
         print("{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, l2), end=" ")
         if l2 == 0:
@@ -90,7 +96,7 @@ def print_pkt(t, pkt):
             print("date=" + str(decode_date(pkt[33:35])))
         elif l2 == 0x27:
             print(to_hex(pkt[29:33]), end=" ")
-            for x in range(7): # 7 meter numbers (with first bit sometimes set to 1) followed by number 0x01-0x45
+            for x in range(7):  # 7 meter numbers (with first bit sometimes set to 1) followed by number 0x01-0x45
                 print(to_hex(pkt[33 + 5*x:37 + 5*x]), end=" ")
                 print(to_hex(pkt[37 + 5*x:38 + 5*x]), end=" ")
             print()
@@ -104,15 +110,15 @@ def print_pkt(t, pkt):
                 l4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
                 print("len={0:02x} {1:02x} cmd={2:02x} cnt={3:02x}".format(l4, unk12, cmd, cnt), end=" ")
 
-                if cmd == 0xce: # fetch hourly usage data, every 6 hours
+                if cmd == 0xce:  # fetch hourly usage data, every 6 hours
                     unk13, hour = struct.unpack(">BH", pkt[32:])
                     print("{0:02x} first_hour={1:05}".format(unk13, hour))
                 elif cmd == 0x22:
                     print(to_hex(pkt[32:]))
-                elif cmd == 0x23: # path building stuff? every 6 hours
+                elif cmd == 0x23:  # path building stuff? every 6 hours
                     unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
                     print("{0:02x} {1:02x} {2:02x} id={3:02x} par_id={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
-                            unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
+                        unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
                     if l4 == 0x20:
                         print("{0:02x}".format(ord(pkt[58])), end=" ")
                         print("date=" + str(decode_date(pkt[59:61])))
@@ -122,11 +128,11 @@ def print_pkt(t, pkt):
                     # Prepare graph edges
                     meter_parents[dst] = parent
                     if level == 2:
-                        meter_parents[parent] = src # Fill this in now, in case we don't hear from parent
+                        meter_parents[parent] = src  # Fill this in now, in case we don't hear from parent
 
                     meter_gatekeepers[dst] = src
                     if level >= 2:
-                        meter_gatekeepers[parent] = src # Fill this in now, in case we don't hear from parent
+                        meter_gatekeepers[parent] = src  # Fill this in now, in case we don't hear from parent
 
                     meter_levels[dst] = level
                     meter_levels[parent] = level - 1
@@ -135,29 +141,29 @@ def print_pkt(t, pkt):
                     print(to_hex(pkt[32:]))
                 elif cmd == 0x6a:
                     print(to_hex(pkt[32:]))
-                else: # unknown command
+                else:  # unknown command
                     print(to_hex(pkt[32:]))
             else:
                 print(to_hex(pkt[24:]))
         else:
             if len(pkt) > 16:
                 l4 = ord(pkt[16])
-                if l4 == l1 - 17: # 1st byte of payload is a length
+                if l4 == l1 - 17:  # 1st byte of payload is a length
                     if len(pkt) > 18:
                         cmd = ord(pkt[18])
-                        if cmd == 0xce: # hourly usage data, every 6 hours
+                        if cmd == 0xce:  # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
                             print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} cur_hour={6:05} last_hour={7:05} n_hour={8:02}".format(l4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))
                             add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
                             # TODO: Get total meter reading
-                        elif cmd == 0x22: # just an acknowledgement
+                        elif cmd == 0x22:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
-                        elif cmd == 0x23: # path building stuff? every 6 hours
+                        elif cmd == 0x23:  # path building stuff? every 6 hours
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
                             # TODO: Parse the rest
-                        elif cmd == 0x28: # just an acknowledgement
+                        elif cmd == 0x28:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
                             print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
                         elif cmd == 0x6a:
@@ -170,36 +176,36 @@ def print_pkt(t, pkt):
                     else:
                         print("len={0:02x}".format(l4) + " data=" + to_hex(pkt[17:]))
                 else:
-                    print("weird=" + to_hex(pkt[16:])) # this happens from time to time
+                    print("weird=" + to_hex(pkt[16:]))  # this happens from time to time
             else:
                 print()
 
 
 if len(sys.argv) < 2:
-    sys.stderr.write("Usage: decode_pcap.py input_file...\n");
+    sys.stderr.write("Usage: decode_pcap.py input_file...\n")
     sys.exit(1)
 
 for filename in sys.argv[1:]:
-    f = open(filename,"rb")
+    f = open(filename, "rb")
     magic = f.read(4)
 
-    if magic == b"\xa1\xb2\xc3\xd4": #big endian
+    if magic == b"\xa1\xb2\xc3\xd4":  # big endian
         endian = ">"
-    elif  magic == b"\xd4\xc3\xb2\xa1": #little endian
+    elif magic == b"\xd4\xc3\xb2\xa1":  # little endian
         endian = "<"
     else:
         raise Exception("Not a pcap capture file (bad magic)")
     hdr = f.read(20)
-    if len(hdr)<20:
+    if len(hdr) < 20:
         raise Exception("Invalid pcap file (too short)")
-    vermaj,vermin,tz,sig,snaplen,linktype = struct.unpack(endian+"HHIIII",hdr)
+    vermaj, vermin, tz, sig, snaplen, linktype = struct.unpack(endian+"HHIIII", hdr)
 
     packets = {}
     while True:
         hdr = f.read(16)
         if len(hdr) < 16:
             break
-        sec,usec,caplen,wirelen = struct.unpack(endian+"IIII", hdr)
+        sec, usec, caplen, wirelen = struct.unpack(endian+"IIII", hdr)
         pkt = f.read(caplen)
         print_pkt(sec + usec / 1000000, pkt)
 
@@ -213,8 +219,6 @@ for meter in sorted(meter_readings.keys()):
         print("{0:5.2f}".format(meter_readings[meter][hour % 65536] / 100) if meter_readings[meter][hour % 65536] >= 0 else "   ? ", end=" ")
     print()
 
-
-import pygraphviz
 
 G = pygraphviz.AGraph(directed=True, ranksep=2.0, rankdir="RL")
 
