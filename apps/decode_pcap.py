@@ -218,7 +218,7 @@ import pygraphviz
 
 G = pygraphviz.AGraph(directed=True, ranksep=2.0, rankdir="RL")
 
-for meter, parent in meter_parents.iteritems():
+for meter, parent in meter_parents.items():
     meter_name = "{0:08x}".format(meter)
     parent_name = "{0:08x}".format(parent)
     if parent & 0x80000000:
