@@ -73,28 +73,28 @@ def to_hex(in_bytes):
     return "".join(["{0:02x}".format(ord(byte)) for byte in in_bytes])
 
 
-def print_pkt(t, pkt):
-    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)), end=" ")
-    l1, flag1, src, dst, unk1, unk2, unk3 = struct.unpack(">BBIIBBB", pkt[0:13])
-    print("len={0:02x} flag={1:02x} src={2:08x} dst={3:08x} {4:02x}{5:02x}{6:02x}".format(l1, flag1, src, dst, unk1, unk2, unk3), end=" ")
-    if (src & 0x80000000) or (dst == 0 and l1 >= 35):
+def print_pkt(timestamp, pkt):
+    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp)), end=" ")
+    len1, flag1, src, dst, unk1, unk2, unk3 = struct.unpack(">BBIIBBB", pkt[0:13])
+    print("len={0:02x} flag={1:02x} src={2:08x} dst={3:08x} {4:02x}{5:02x}{6:02x}".format(len1, flag1, src, dst, unk1, unk2, unk3), end=" ")
+    if (src & 0x80000000) or (dst == 0 and len1 >= 35):
         ts_h, ts_m, ts_s = decode_ts(pkt[13:16])
         print("ts={0:02}:{1:02}:{2:06.3f}".format(ts_h, ts_m, ts_s), end=" ")
     else:
         print("rpt=" + to_hex(pkt[13:14]) + " " + to_hex(pkt[14:16]), end=" ")
 
-    if dst == 0 and l1 >= 35:  # flood broadcast message
-        unk4, unk5, hop, unk7, addr, unk8, l2 = struct.unpack(">BBBBIIB", pkt[16:29])
-        print("{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, l2), end=" ")
-        if l2 == 0:
+    if dst == 0 and len1 >= 35:  # flood broadcast message
+        unk4, unk5, hop, unk7, addr, unk8, len2 = struct.unpack(">BBBBIIB", pkt[16:29])
+        print("{0:02x}{1:02x} hop={2:02x} {3:02x} addr={4:08x} {5:08x} len={6:02x}".format(unk4, unk5, hop, unk7, addr, unk8, len2), end=" ")
+        if len2 == 0:
             print(to_hex(pkt[29:33]), end=" ")
-            unk9, l3 = struct.unpack(">BB", pkt[33:35])
+            unk9, len3 = struct.unpack(">BB", pkt[33:35])
             print("{0:02x}".format(unk9), end=" ")
-            print("next_" + str(l3) + "_days=" + to_hex(pkt[35:]))
-        elif l2 == 6:
+            print("next_" + str(len3) + "_days=" + to_hex(pkt[35:]))
+        elif len2 == 6:
             print(to_hex(pkt[29:33]), end=" ")
             print("date=" + str(decode_date(pkt[33:35])))
-        elif l2 == 0x27:
+        elif len2 == 0x27:
             print(to_hex(pkt[29:33]), end=" ")
             for x in range(7):  # 7 meter numbers (with first bit sometimes set to 1) followed by number 0x01-0x45
                 print(to_hex(pkt[33 + 5*x:37 + 5*x]), end=" ")
@@ -107,8 +107,8 @@ def print_pkt(t, pkt):
             print("path=" + to_hex(pkt[16:24]), end=" ")
             if ord(pkt[24]) == 0x40:
                 print(to_hex(pkt[24:28]), end=" ")
-                l4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
-                print("len={0:02x} {1:02x} cmd={2:02x} cnt={3:02x}".format(l4, unk12, cmd, cnt), end=" ")
+                len4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
+                print("len={0:02x} {1:02x} cmd={2:02x} cnt={3:02x}".format(len4, unk12, cmd, cnt), end=" ")
 
                 if cmd == 0xce:  # fetch hourly usage data, every 6 hours
                     unk13, hour = struct.unpack(">BH", pkt[32:])
@@ -119,7 +119,7 @@ def print_pkt(t, pkt):
                     unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
                     print("{0:02x} {1:02x} {2:02x} id={3:02x} par_id={4:02x} parent={5:08x} {6:02x} #child={7} {8:02x} lvl={9} {10:02x}{11:02x}{12:02x} {13:02x} {14:02x} {15:02x} {16:04x} {17:08x} {18:02x}".format(
                         unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
-                    if l4 == 0x20:
+                    if len4 == 0x20:
                         print("{0:02x}".format(ord(pkt[58])), end=" ")
                         print("date=" + str(decode_date(pkt[59:61])))
                     else:
@@ -147,34 +147,34 @@ def print_pkt(t, pkt):
                 print(to_hex(pkt[24:]))
         else:
             if len(pkt) > 16:
-                l4 = ord(pkt[16])
-                if l4 == l1 - 17:  # 1st byte of payload is a length
+                len4 = ord(pkt[16])
+                if len4 == len1 - 17:  # 1st byte of payload is a length
                     if len(pkt) > 18:
                         cmd = ord(pkt[18])
                         if cmd == 0xce:  # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} cur_hour={6:05} last_hour={7:05} n_hour={8:02}".format(l4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))
+                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x} {4:02x} {5:02x} cur_hour={6:05} last_hour={7:05} n_hour={8:02}".format(len4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))
                             add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
                             # TODO: Get total meter reading
                         elif cmd == 0x22:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                         elif cmd == 0x23:  # path building stuff? every 6 hours
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                             # TODO: Parse the rest
                         elif cmd == 0x28:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                         elif cmd == 0x6a:
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(l4, unk10, cmd, ctr), to_hex(pkt[20:]))
+                            print("len={0:02x} {1:02x} cmd={2:02x} ctr={3:02x}".format(len4, unk10, cmd, ctr), to_hex(pkt[20:]))
                             # TODO: Parse the rest
                         else:
                             print("todo=" + to_hex(pkt[16:]))
                             # TODO: Investigate these
                     else:
-                        print("len={0:02x}".format(l4) + " data=" + to_hex(pkt[17:]))
+                        print("len={0:02x}".format(len4) + " data=" + to_hex(pkt[17:]))
                 else:
                     print("weird=" + to_hex(pkt[16:]))  # this happens from time to time
             else:
