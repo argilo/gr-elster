@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Copyright 2013, 2014, 2019 Clayton Smith
 #
@@ -19,7 +19,6 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-from __future__ import division, print_function, unicode_literals
 import datetime
 import struct
 import sys
@@ -70,7 +69,7 @@ def decode_date(date_bytes):
 
 
 def to_hex(in_bytes):
-    return "".join(["{:02x}".format(ord(byte)) for byte in in_bytes])
+    return "".join(["{:02x}".format(byte) for byte in in_bytes])
 
 
 def print_pkt(timestamp, pkt):
@@ -105,7 +104,7 @@ def print_pkt(timestamp, pkt):
     else:
         if src & 0x80000000:
             print("path=" + to_hex(pkt[16:24]), end=" ")
-            if ord(pkt[24]) == 0x40:
+            if pkt[24] == 0x40:
                 print(to_hex(pkt[24:28]), end=" ")
                 len4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
                 print("len={:02x} {:02x} cmd={:02x} cnt={:02x}".format(len4, unk12, cmd, cnt), end=" ")
@@ -120,7 +119,7 @@ def print_pkt(timestamp, pkt):
                     print("{:02x} {:02x} {:02x} id={:02x} par_id={:02x} parent={:08x} {:02x} #child={} {:02x} lvl={} {:02x}{:02x}{:02x} {:02x} {:02x} {:02x} {:04x} {:08x} {:02x}".format(
                         unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
                     if len4 == 0x20:
-                        print("{:02x}".format(ord(pkt[58])), end=" ")
+                        print("{:02x}".format(pkt[58]), end=" ")
                         print("date=" + str(decode_date(pkt[59:61])))
                     else:
                         print()
@@ -147,10 +146,10 @@ def print_pkt(timestamp, pkt):
                 print(to_hex(pkt[24:]))
         else:
             if len(pkt) > 16:
-                len4 = ord(pkt[16])
+                len4 = pkt[16]
                 if len4 == len1 - 17:  # 1st byte of payload is a length
                     if len(pkt) > 18:
-                        cmd = ord(pkt[18])
+                        cmd = pkt[18]
                         if cmd == 0xce:  # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
                             print("len={:02x} {:02x} cmd={:02x} ctr={:02x} {:02x} {:02x} cur_hour={:05} last_hour={:05} n_hour={:02}".format(len4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), to_hex(pkt[27:]))

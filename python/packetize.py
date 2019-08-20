@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2013, 2014, 2019 Clayton Smith.
 #
@@ -23,8 +24,8 @@ import datetime
 import os.path
 import struct
 import time
-from gnuradio import gr
 import numpy
+from gnuradio import gr
 
 
 class packetize(gr.basic_block):
@@ -36,9 +37,9 @@ class packetize(gr.basic_block):
     """
     def __init__(self, num_inputs):
         gr.basic_block.__init__(self,
-                                name=b"packetize",
+                                name="packetize",
                                 in_sig=[numpy.int8]*num_inputs,
-                                out_sig=[])
+                                out_sig=None)
 
         i = 1
         filename = "elster-" + "{:03}".format(i) + ".pcap"
@@ -47,7 +48,7 @@ class packetize(gr.basic_block):
             filename = "elster-" + "{:03}".format(i) + ".pcap"
         self.file = open(filename, "wb")
         self.linktype = 147
-        self.file.write(struct.pack("IHHIIII", 0xa1b2c3d4L, 2, 4, 0, 0, 32767, self.linktype))
+        self.file.write(struct.pack("IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 32767, self.linktype))
         self.file.flush()
 
     def __del__(self):
@@ -61,13 +62,13 @@ class packetize(gr.basic_block):
             while mask < 0x100:
                 lowbit = reg & 1
                 reg >>= 1
-                if ord(byte) & mask:
+                if byte & mask:
                     lowbit ^= 1
                 mask <<= 1
                 if lowbit:
                     reg ^= poly
         reg ^= 0xffff
-        return chr(reg & 0xff) + chr(reg >> 8)
+        return bytes([reg & 0xff, reg >> 8])
 
     def process_packet(self, channel, bits):
         bytes = numpy.packbits(bits) ^ 0x55
