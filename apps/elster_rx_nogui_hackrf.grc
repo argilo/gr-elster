@@ -36,7 +36,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '908800000'
+    value: '909200000'
   states:
     bus_sink: false
     bus_source: false
@@ -118,7 +118,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 144.0]
+    coordinate: [832, 144.0]
     rotation: 0
     state: enabled
 - name: blocks_null_sink_1
@@ -135,7 +135,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 368.0]
+    coordinate: [832, 368.0]
     rotation: 0
     state: enabled
 - name: blocks_null_sink_1_0
@@ -286,7 +286,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 112.0]
+    coordinate: [960, 1232.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0
@@ -668,12 +668,12 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    note: Ch. 16
+    note: Ch. 17
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [352, 108.0]
+    coordinate: [352, 132.0]
     rotation: 0
     state: enabled
 - name: note_1
@@ -707,12 +707,12 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    note: Ch. 15
+    note: Ch. 16
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [352, 1196.0]
+    coordinate: [352, 1228.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_1
@@ -1069,7 +1069,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 572.0]
+    coordinate: [32, 604.0]
     rotation: 0
     state: enabled
 - name: pfb_channelizer_ccf_0
@@ -1091,7 +1091,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 112.0]
+    coordinate: [448, 144.0]
     rotation: 0
     state: enabled
 
@@ -1122,41 +1122,41 @@ connections:
 - [elster_channel_rx_1_1_2, '0', elster_packetize_0, '8']
 - [elster_channel_rx_1_3, '0', elster_packetize_0, '6']
 - [osmosdr_source_1, '0', pfb_channelizer_ccf_0, '0']
-- [pfb_channelizer_ccf_0, '0', elster_channel_rx_0, '0']
-- [pfb_channelizer_ccf_0, '1', blocks_null_sink_0, '0']
-- [pfb_channelizer_ccf_0, '10', elster_channel_rx_1_1_0, '0']
-- [pfb_channelizer_ccf_0, '11', elster_channel_rx_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '12', elster_channel_rx_1_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '13', elster_channel_rx_0_2, '0']
-- [pfb_channelizer_ccf_0, '14', blocks_null_sink_1_0, '0']
-- [pfb_channelizer_ccf_0, '15', elster_channel_rx_0_0_1, '0']
-- [pfb_channelizer_ccf_0, '16', blocks_null_sink_1_1, '0']
-- [pfb_channelizer_ccf_0, '17', blocks_null_sink_1_2, '0']
-- [pfb_channelizer_ccf_0, '18', blocks_null_sink_1_3, '0']
-- [pfb_channelizer_ccf_0, '19', blocks_null_sink_1_4, '0']
-- [pfb_channelizer_ccf_0, '2', elster_channel_rx_0_0, '0']
-- [pfb_channelizer_ccf_0, '20', elster_channel_rx_1_0_0_1, '0']
-- [pfb_channelizer_ccf_0, '21', blocks_null_sink_1_5, '0']
-- [pfb_channelizer_ccf_0, '22', elster_channel_rx_0_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '23', elster_channel_rx_1_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '24', elster_channel_rx_0_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '25', elster_channel_rx_1_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '26', elster_channel_rx_0_3, '0']
-- [pfb_channelizer_ccf_0, '27', elster_channel_rx_1_3, '0']
-- [pfb_channelizer_ccf_0, '28', blocks_null_sink_1_6, '0']
-- [pfb_channelizer_ccf_0, '29', blocks_null_sink_1_7, '0']
-- [pfb_channelizer_ccf_0, '3', elster_channel_rx_1_0, '0']
-- [pfb_channelizer_ccf_0, '30', elster_channel_rx_0_1_2, '0']
-- [pfb_channelizer_ccf_0, '31', elster_channel_rx_1_1_2, '0']
-- [pfb_channelizer_ccf_0, '32', elster_channel_rx_0_0_0_2, '0']
-- [pfb_channelizer_ccf_0, '33', elster_channel_rx_1_0_0_2, '0']
-- [pfb_channelizer_ccf_0, '34', elster_channel_rx_1_0_1_1, '0']
-- [pfb_channelizer_ccf_0, '4', elster_channel_rx_0_1, '0']
-- [pfb_channelizer_ccf_0, '5', elster_channel_rx_1_1, '0']
-- [pfb_channelizer_ccf_0, '6', elster_channel_rx_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '7', elster_channel_rx_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '8', blocks_null_sink_1, '0']
-- [pfb_channelizer_ccf_0, '9', elster_channel_rx_0_1_0, '0']
+- [pfb_channelizer_ccf_0, '0', blocks_null_sink_0, '0']
+- [pfb_channelizer_ccf_0, '1', elster_channel_rx_0_0, '0']
+- [pfb_channelizer_ccf_0, '10', elster_channel_rx_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '11', elster_channel_rx_1_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '12', elster_channel_rx_0_2, '0']
+- [pfb_channelizer_ccf_0, '13', blocks_null_sink_1_0, '0']
+- [pfb_channelizer_ccf_0, '14', elster_channel_rx_0_0_1, '0']
+- [pfb_channelizer_ccf_0, '15', blocks_null_sink_1_1, '0']
+- [pfb_channelizer_ccf_0, '16', blocks_null_sink_1_2, '0']
+- [pfb_channelizer_ccf_0, '17', blocks_null_sink_1_3, '0']
+- [pfb_channelizer_ccf_0, '18', blocks_null_sink_1_4, '0']
+- [pfb_channelizer_ccf_0, '19', elster_channel_rx_1_0_0_1, '0']
+- [pfb_channelizer_ccf_0, '2', elster_channel_rx_1_0, '0']
+- [pfb_channelizer_ccf_0, '20', blocks_null_sink_1_5, '0']
+- [pfb_channelizer_ccf_0, '21', elster_channel_rx_0_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '22', elster_channel_rx_1_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '23', elster_channel_rx_0_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '24', elster_channel_rx_1_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '25', elster_channel_rx_0_3, '0']
+- [pfb_channelizer_ccf_0, '26', elster_channel_rx_1_3, '0']
+- [pfb_channelizer_ccf_0, '27', blocks_null_sink_1_6, '0']
+- [pfb_channelizer_ccf_0, '28', blocks_null_sink_1_7, '0']
+- [pfb_channelizer_ccf_0, '29', elster_channel_rx_0_1_2, '0']
+- [pfb_channelizer_ccf_0, '3', elster_channel_rx_0_1, '0']
+- [pfb_channelizer_ccf_0, '30', elster_channel_rx_1_1_2, '0']
+- [pfb_channelizer_ccf_0, '31', elster_channel_rx_0_0_0_2, '0']
+- [pfb_channelizer_ccf_0, '32', elster_channel_rx_1_0_0_2, '0']
+- [pfb_channelizer_ccf_0, '33', elster_channel_rx_1_0_1_1, '0']
+- [pfb_channelizer_ccf_0, '34', elster_channel_rx_0, '0']
+- [pfb_channelizer_ccf_0, '4', elster_channel_rx_1_1, '0']
+- [pfb_channelizer_ccf_0, '5', elster_channel_rx_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '6', elster_channel_rx_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '7', blocks_null_sink_1, '0']
+- [pfb_channelizer_ccf_0, '8', elster_channel_rx_0_1_0, '0']
+- [pfb_channelizer_ccf_0, '9', elster_channel_rx_1_1_0, '0']
 
 metadata:
   file_format: 1
