@@ -71,20 +71,20 @@ def decode_date(date_bytes):
 def print_pkt(timestamp, pkt):
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp)), end=" ")
     len1, flag1, src, dst, unk1, unk2, unk3 = struct.unpack(">BBIIBBB", pkt[0:13])
-    print("len={:02x} flag={:02x} src={:08x} dst={:08x} {:02x}{:02x}{:02x}".format(len1, flag1, src, dst, unk1, unk2, unk3), end=" ")
+    print(f"len={len1:02x} flag={flag1:02x} src={src:08x} dst={dst:08x} {unk1:02x}{unk2:02x}{unk3:02x}", end=" ")
     if (src & 0x80000000) or (dst == 0 and len1 >= 35):
         ts_h, ts_m, ts_s = decode_ts(pkt[13:16])
-        print("ts={:02}:{:02}:{:06.3f}".format(ts_h, ts_m, ts_s), end=" ")
+        print(f"ts={ts_h:02}:{ts_m:02}:{ts_s:06.3f}", end=" ")
     else:
         print("rpt=" + pkt[13:14].hex() + " " + pkt[14:16].hex(), end=" ")
 
     if dst == 0 and len1 >= 35:  # flood broadcast message
         unk4, unk5, hop, unk7, addr, unk8, len2 = struct.unpack(">BBBBIIB", pkt[16:29])
-        print("{:02x}{:02x} hop={:02x} {:02x} addr={:08x} {:08x} len={:02x}".format(unk4, unk5, hop, unk7, addr, unk8, len2), end=" ")
+        print(f"{unk4:02x}{unk5:02x} hop={hop:02x} {unk7:02x} addr={addr:08x} {unk8:08x} len={len2:02x}", end=" ")
         if len2 == 0:
             print(pkt[29:33].hex(), end=" ")
             unk9, len3 = struct.unpack(">BB", pkt[33:35])
-            print("{:02x}".format(unk9), end=" ")
+            print(f"{unk9:02x}", end=" ")
             print("next_" + str(len3) + "_days=" + pkt[35:].hex())
         elif len2 == 6:
             print(pkt[29:33].hex(), end=" ")
@@ -103,17 +103,16 @@ def print_pkt(timestamp, pkt):
             if pkt[24] == 0x40:
                 print(pkt[24:28].hex(), end=" ")
                 len4, unk12, cmd, cnt = struct.unpack(">BBBB", pkt[28:32])
-                print("len={:02x} {:02x} cmd={:02x} cnt={:02x}".format(len4, unk12, cmd, cnt), end=" ")
+                print(f"len={len4:02x} {unk12:02x} cmd={cmd:02x} cnt={cnt:02x}", end=" ")
 
                 if cmd == 0xce:  # fetch hourly usage data, every 6 hours
                     unk13, hour = struct.unpack(">BH", pkt[32:])
-                    print("{:02x} first_hour={:05}".format(unk13, hour))
+                    print(f"{unk13:02x} first_hour={hour:05}")
                 elif cmd == 0x22:
                     print(pkt[32:].hex())
                 elif cmd == 0x23:  # path building stuff? every 6 hours
                     unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29 = struct.unpack(">BBBBBIBBBBBBBBBBHIB", pkt[32:58])
-                    print("{:02x} {:02x} {:02x} id={:02x} par_id={:02x} parent={:08x} {:02x} #child={} {:02x} lvl={} {:02x}{:02x}{:02x} {:02x} {:02x} {:02x} {:04x} {:08x} {:02x}".format(
-                        unk14, unk15, unk16, your_id, parent_id, parent, unk17, n_children, unk19, level, unk21, unk22, unk23, unk24, unk25, unk26, unk27, unk28, unk29), end=" ")
+                    print(f"{unk14:02x} {unk15:02x} {unk16:02x} id={your_id:02x} par_id={parent_id:02x} parent={parent:08x} {unk17:02x} #child={n_children} {unk19:02x} lvl={level} {unk21:02x}{unk22:02x}{unk23:02x} {unk24:02x} {unk25:02x} {unk26:02x} {unk27:04x} {unk28:08x} {unk29:02x}", end=" ")
                     if len4 == 0x20:
                         print("{:02x}".format(pkt[58]), end=" ")
                         print("date=" + str(decode_date(pkt[59:61])))
@@ -148,28 +147,28 @@ def print_pkt(timestamp, pkt):
                         cmd = pkt[18]
                         if cmd == 0xce:  # hourly usage data, every 6 hours
                             unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
-                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x} {:02x} {:02x} cur_hour={:05} last_hour={:05} n_hour={:02}".format(len4, unk10, cmd, ctr, unk11, flag2, curr_hour, last_hour, n_hours), pkt[27:].hex())
+                            print(f"len={len4:02x} {unk10:02x} cmd={cmd:02x} ctr={ctr:02x} {unk11:02x} {flag2:02x} cur_hour={curr_hour:05} last_hour={last_hour:05} n_hour={n_hours:02}", pkt[27:].hex())
                             add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
                             # TODO: Get total meter reading
                         elif cmd == 0x22:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), pkt[20:].hex())
+                            print(f"len={len4:02x} {unk10:02x} cmd={cmd:02x} ctr={ctr:02x}", pkt[20:].hex())
                         elif cmd == 0x23:  # path building stuff? every 6 hours
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), pkt[20:].hex())
+                            print(f"len={len4:02x} {unk10:02x} cmd={cmd:02x} ctr={ctr:02x}", pkt[20:].hex())
                             # TODO: Parse the rest
                         elif cmd == 0x28:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), pkt[20:].hex())
+                            print(f"len={len4:02x} {unk10:02x} cmd={cmd:02x} ctr={ctr:02x}", pkt[20:].hex())
                         elif cmd == 0x6a:
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
-                            print("len={:02x} {:02x} cmd={:02x} ctr={:02x}".format(len4, unk10, cmd, ctr), pkt[20:].hex())
+                            print(f"len={len4:02x} {unk10:02x} cmd={cmd:02x} ctr={ctr:02x}", pkt[20:].hex())
                             # TODO: Parse the rest
                         else:
                             print("todo=" + pkt[16:].hex())
                             # TODO: Investigate these
                     else:
-                        print("len={:02x}".format(len4) + " data=" + pkt[17:].hex())
+                        print(f"len={len4:02x}" + " data=" + pkt[17:].hex())
                 else:
                     print("weird=" + pkt[16:].hex())  # this happens from time to time
             else:
@@ -218,8 +217,8 @@ for meter in sorted(meter_readings.keys()):
 G = pygraphviz.AGraph(directed=True, ranksep=2.0, rankdir="RL")
 
 for meter, parent in meter_parents.items():
-    meter_name = "{:08x}".format(meter)
-    parent_name = "{:08x}".format(parent)
+    meter_name = f"{meter:08x}"
+    parent_name = f"{parent:08x}"
     if parent & 0x80000000:
         G.add_node(parent_name, color="red", rank="max")
     G.add_edge(meter_name, parent_name)
