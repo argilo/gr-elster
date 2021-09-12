@@ -44,6 +44,18 @@ blocks:
     coordinate: [8, 164]
     rotation: 0
     state: enabled
+- name: symbol_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 2 / 56.48E-6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 228.0]
+    rotation: 0
+    state: true
 - name: analog_quadrature_demod_cf_0
   id: analog_quadrature_demod_cf
   parameters:
@@ -57,7 +69,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [344, 196.0]
+    coordinate: [336, 196.0]
     rotation: 0
     state: enabled
 - name: digital_binary_slicer_fb_0
@@ -72,7 +84,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 152.0]
+    coordinate: [1048, 152.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0
@@ -83,7 +95,7 @@ blocks:
     comment: ''
     constellation: digital.constellation_bpsk().base()
     damping: '1.0'
-    loop_bw: '0.05'
+    loop_bw: '0.1'
     max_dev: '0.01'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -91,7 +103,7 @@ blocks:
     osps: '1'
     pfb_mf_taps: '[]'
     resamp_type: digital.IR_MMSE_8TAP
-    sps: channel_rate * 56.48E-6 / 2
+    sps: channel_rate / symbol_rate
     ted_gain: '1.0'
     ted_type: digital.TED_ZERO_CROSSING
     type: ff
@@ -99,7 +111,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 140.0]
+    coordinate: [744, 140.0]
     rotation: 0
     state: true
 - name: import_0
@@ -130,7 +142,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 148]
+    coordinate: [1200, 148.0]
     rotation: 0
     state: enabled
 - name: pad_source_0
@@ -150,15 +162,39 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 196]
+    coordinate: [192, 196.0]
     rotation: 0
     state: enabled
+- name: root_raised_cosine_filter_0
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: '0.5'
+    comment: ''
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: '32'
+    samp_rate: channel_rate
+    sym_rate: symbol_rate
+    type: fir_filter_fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 156.0]
+    rotation: 0
+    state: true
 
 connections:
-- [analog_quadrature_demod_cf_0, '0', digital_symbol_sync_xx_0, '0']
+- [analog_quadrature_demod_cf_0, '0', root_raised_cosine_filter_0, '0']
 - [digital_binary_slicer_fb_0, '0', pad_sink_0, '0']
 - [digital_symbol_sync_xx_0, '0', digital_binary_slicer_fb_0, '0']
 - [pad_source_0, '0', analog_quadrature_demod_cf_0, '0']
+- [root_raised_cosine_filter_0, '0', digital_symbol_sync_xx_0, '0']
 
 metadata:
   file_format: 1
