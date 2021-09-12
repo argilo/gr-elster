@@ -132,11 +132,12 @@ class packetize(gr.basic_block):
         if len(input_items[0]) < 1248:
             return 0
 
-        for channel in range(len(input_items)):
-            index = input_items[channel].tostring().find(self.preamble_sfd, 0, -1248+96)
+        for channel, bits in enumerate(input_items):
+            bits_string = bits.tostring()
+            index = bits_string.find(self.preamble_sfd, 0, -1248+96)
             while index != -1:
-                self.manchester_demod_packet(channel, input_items[channel][index:index+1248])
-                index = input_items[channel].tostring().find(self.preamble_sfd, index+1248, -1248+96)
-            self.consume(channel, len(input_items[channel])-1247)
+                self.manchester_demod_packet(channel, bits[index:index+1248])
+                index = bits_string.find(self.preamble_sfd, index+1248, -1248+96)
+            self.consume(channel, len(bits)-1247)
 
         return 0
