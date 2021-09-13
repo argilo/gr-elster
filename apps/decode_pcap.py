@@ -146,9 +146,15 @@ def print_pkt(timestamp, pkt):
                     if len(pkt) > 18:
                         cmd = pkt[18]
                         if cmd == 0xce:  # hourly usage data, every 6 hours
-                            unk10, cmd, ctr, unk11, flag2, cur_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
-                            print(f"len={len4:02x} {unk10:02x} {cmd=:02x} {ctr=:02x} {unk11:02x} {flag2:02x} {cur_hour=:05} {last_hour=:05} n_hour={n_hours:02}", pkt[27:].hex())
-                            add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
+                            if len4 >= 10:
+                                unk10, cmd, ctr, unk11, flag2, cur_hour, last_hour, n_hours = struct.unpack(">BBBBBHHB", pkt[17:27])
+                                print(f"len={len4:02x} {unk10:02x} {cmd=:02x} {ctr=:02x} {unk11:02x} {flag2:02x} {cur_hour=:05} {last_hour=:05} n_hour={n_hours:02}", pkt[27:].hex())
+                                add_hourly(src, last_hour, struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours]))
+                            elif len4 >= 6:
+                                unk10, cmd, ctr, unk11, unk12, unk13 = struct.unpack(">BBBBBB", pkt[17:23])
+                                print(f"len={len4:02x} {unk10:02x} {cmd=:02x} {ctr=:02x} {unk11:02x} {unk12:02x} {unk13:02x}", pkt[23:].hex())
+                            else:
+                                print("todo=" + pkt[17:].hex())
                             # TODO: Get total meter reading
                         elif cmd == 0x22:  # just an acknowledgement
                             unk10, cmd, ctr = struct.unpack(">BBB", pkt[17:20])
