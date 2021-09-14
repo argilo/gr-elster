@@ -65,7 +65,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 356.0]
+    coordinate: [8, 292.0]
     rotation: 0
     state: enabled
 - name: n_channels
@@ -80,18 +80,6 @@ blocks:
     coordinate: [112, 100.0]
     rotation: 0
     state: true
-- name: rx_gain
-  id: variable
-  parameters:
-    comment: ''
-    value: '45'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 292.0]
-    rotation: 0
-    state: enabled
 - name: samp_rate
   id: variable
   parameters:
