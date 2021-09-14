@@ -111,169 +111,16 @@ blocks:
     alias: ''
     bus_structure_sink: '[[0,],]'
     comment: ''
-    num_inputs: '1'
+    num_inputs: '10'
     type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 144.0]
+    coordinate: [664, 944.0]
     rotation: 0
-    state: enabled
-- name: blocks_null_sink_1
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 368.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_0
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 560.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_1
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 624.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_2
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 656.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_3
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 688.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_4
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 720.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_5
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 784.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_6
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 1008.0]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_1_7
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 1040.0]
-    rotation: 0
-    state: enabled
+    state: true
 - name: elster_channel_rx_0
   id: elster_channel_rx
   parameters:
@@ -286,7 +133,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1232.0]
+    coordinate: [776, 528.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0
@@ -301,7 +148,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 176.0]
+    coordinate: [776, 560.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0_0
@@ -316,7 +163,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 304.0]
+    coordinate: [776, 688.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0_0_0
@@ -331,7 +178,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 464.0]
+    coordinate: [776, 816.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0_0_0_0
@@ -346,7 +193,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 880.0]
+    coordinate: [776, 240.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0_0_2
@@ -361,7 +208,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1136.0]
+    coordinate: [776, 432.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_0_1
@@ -376,7 +223,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 592.0]
+    coordinate: [776, 912.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_1
@@ -391,7 +238,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 240.0]
+    coordinate: [776, 624.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_1_0
@@ -406,7 +253,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 400.0]
+    coordinate: [776, 752.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_1_0_0
@@ -421,7 +268,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 816.0]
+    coordinate: [776, 176.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_1_2
@@ -436,7 +283,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1072.0]
+    coordinate: [776, 368.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_2
@@ -451,7 +298,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 528.0]
+    coordinate: [776, 880.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_0_3
@@ -466,7 +313,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 944.0]
+    coordinate: [776, 304.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0
@@ -481,7 +328,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 208.0]
+    coordinate: [776, 592.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_0
@@ -496,7 +343,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 336.0]
+    coordinate: [776, 720.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_0_0
@@ -511,7 +358,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 496.0]
+    coordinate: [776, 848.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_0_0_0
@@ -526,7 +373,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 912.0]
+    coordinate: [776, 272.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_0_1
@@ -541,7 +388,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 752.0]
+    coordinate: [776, 144.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_0_2
@@ -556,7 +403,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1168.0]
+    coordinate: [776, 464.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_0_1_1
@@ -571,7 +418,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1200.0]
+    coordinate: [776, 496.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_1
@@ -586,7 +433,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 272.0]
+    coordinate: [776, 656.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_1_0
@@ -601,7 +448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 432.0]
+    coordinate: [776, 784.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_1_0_0
@@ -616,7 +463,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 848.0]
+    coordinate: [776, 208.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_1_2
@@ -631,7 +478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 1104.0]
+    coordinate: [776, 400.0]
     rotation: 0
     state: enabled
 - name: elster_channel_rx_1_3
@@ -646,7 +493,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 976.0]
+    coordinate: [776, 336.0]
     rotation: 0
     state: enabled
 - name: elster_packetize_0
@@ -660,59 +507,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 352.0]
-    rotation: 0
-    state: enabled
-- name: note_0
-  id: note
-  parameters:
-    alias: ''
-    comment: ''
-    note: Ch. 17
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 132.0]
-    rotation: 0
-    state: enabled
-- name: note_1
-  id: note
-  parameters:
-    alias: ''
-    comment: ''
-    note: Ch. 31
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 588.0]
-    rotation: 0
-    state: enabled
-- name: note_2
-  id: note
-  parameters:
-    alias: ''
-    comment: ''
-    note: Ch. 1
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 748.0]
-    rotation: 0
-    state: enabled
-- name: note_3
-  id: note
-  parameters:
-    alias: ''
-    comment: ''
-    note: Ch. 16
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 1228.0]
+    coordinate: [944, 144.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_1
@@ -1079,7 +874,8 @@ blocks:
     alias: ''
     atten: '100'
     bus_conns: '[[0,],]'
-    ch_map: '[]'
+    ch_map: '[19, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33, 34, 1, 2, 3, 4, 5, 6,
+      8, 9, 10, 11, 12, 14]'
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -1122,41 +918,41 @@ connections:
 - [elster_channel_rx_1_1_2, '0', elster_packetize_0, '8']
 - [elster_channel_rx_1_3, '0', elster_packetize_0, '6']
 - [osmosdr_source_1, '0', pfb_channelizer_ccf_0, '0']
-- [pfb_channelizer_ccf_0, '0', blocks_null_sink_0, '0']
-- [pfb_channelizer_ccf_0, '1', elster_channel_rx_0_0, '0']
-- [pfb_channelizer_ccf_0, '10', elster_channel_rx_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '11', elster_channel_rx_1_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '12', elster_channel_rx_0_2, '0']
-- [pfb_channelizer_ccf_0, '13', blocks_null_sink_1_0, '0']
-- [pfb_channelizer_ccf_0, '14', elster_channel_rx_0_0_1, '0']
-- [pfb_channelizer_ccf_0, '15', blocks_null_sink_1_1, '0']
-- [pfb_channelizer_ccf_0, '16', blocks_null_sink_1_2, '0']
-- [pfb_channelizer_ccf_0, '17', blocks_null_sink_1_3, '0']
-- [pfb_channelizer_ccf_0, '18', blocks_null_sink_1_4, '0']
-- [pfb_channelizer_ccf_0, '19', elster_channel_rx_1_0_0_1, '0']
-- [pfb_channelizer_ccf_0, '2', elster_channel_rx_1_0, '0']
-- [pfb_channelizer_ccf_0, '20', blocks_null_sink_1_5, '0']
-- [pfb_channelizer_ccf_0, '21', elster_channel_rx_0_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '22', elster_channel_rx_1_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '23', elster_channel_rx_0_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '24', elster_channel_rx_1_0_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '25', elster_channel_rx_0_3, '0']
-- [pfb_channelizer_ccf_0, '26', elster_channel_rx_1_3, '0']
-- [pfb_channelizer_ccf_0, '27', blocks_null_sink_1_6, '0']
-- [pfb_channelizer_ccf_0, '28', blocks_null_sink_1_7, '0']
-- [pfb_channelizer_ccf_0, '29', elster_channel_rx_0_1_2, '0']
-- [pfb_channelizer_ccf_0, '3', elster_channel_rx_0_1, '0']
-- [pfb_channelizer_ccf_0, '30', elster_channel_rx_1_1_2, '0']
-- [pfb_channelizer_ccf_0, '31', elster_channel_rx_0_0_0_2, '0']
-- [pfb_channelizer_ccf_0, '32', elster_channel_rx_1_0_0_2, '0']
-- [pfb_channelizer_ccf_0, '33', elster_channel_rx_1_0_1_1, '0']
-- [pfb_channelizer_ccf_0, '34', elster_channel_rx_0, '0']
-- [pfb_channelizer_ccf_0, '4', elster_channel_rx_1_1, '0']
-- [pfb_channelizer_ccf_0, '5', elster_channel_rx_0_0_0, '0']
-- [pfb_channelizer_ccf_0, '6', elster_channel_rx_1_0_0, '0']
-- [pfb_channelizer_ccf_0, '7', blocks_null_sink_1, '0']
-- [pfb_channelizer_ccf_0, '8', elster_channel_rx_0_1_0, '0']
-- [pfb_channelizer_ccf_0, '9', elster_channel_rx_1_1_0, '0']
+- [pfb_channelizer_ccf_0, '0', elster_channel_rx_1_0_0_1, '0']
+- [pfb_channelizer_ccf_0, '1', elster_channel_rx_0_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '10', elster_channel_rx_1_0_0_2, '0']
+- [pfb_channelizer_ccf_0, '11', elster_channel_rx_1_0_1_1, '0']
+- [pfb_channelizer_ccf_0, '12', elster_channel_rx_0, '0']
+- [pfb_channelizer_ccf_0, '13', elster_channel_rx_0_0, '0']
+- [pfb_channelizer_ccf_0, '14', elster_channel_rx_1_0, '0']
+- [pfb_channelizer_ccf_0, '15', elster_channel_rx_0_1, '0']
+- [pfb_channelizer_ccf_0, '16', elster_channel_rx_1_1, '0']
+- [pfb_channelizer_ccf_0, '17', elster_channel_rx_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '18', elster_channel_rx_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '19', elster_channel_rx_0_1_0, '0']
+- [pfb_channelizer_ccf_0, '2', elster_channel_rx_1_1_0_0, '0']
+- [pfb_channelizer_ccf_0, '20', elster_channel_rx_1_1_0, '0']
+- [pfb_channelizer_ccf_0, '21', elster_channel_rx_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '22', elster_channel_rx_1_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '23', elster_channel_rx_0_2, '0']
+- [pfb_channelizer_ccf_0, '24', elster_channel_rx_0_0_1, '0']
+- [pfb_channelizer_ccf_0, '25', blocks_null_sink_0, '0']
+- [pfb_channelizer_ccf_0, '26', blocks_null_sink_0, '1']
+- [pfb_channelizer_ccf_0, '27', blocks_null_sink_0, '2']
+- [pfb_channelizer_ccf_0, '28', blocks_null_sink_0, '3']
+- [pfb_channelizer_ccf_0, '29', blocks_null_sink_0, '4']
+- [pfb_channelizer_ccf_0, '3', elster_channel_rx_0_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '30', blocks_null_sink_0, '5']
+- [pfb_channelizer_ccf_0, '31', blocks_null_sink_0, '6']
+- [pfb_channelizer_ccf_0, '32', blocks_null_sink_0, '7']
+- [pfb_channelizer_ccf_0, '33', blocks_null_sink_0, '8']
+- [pfb_channelizer_ccf_0, '34', blocks_null_sink_0, '9']
+- [pfb_channelizer_ccf_0, '4', elster_channel_rx_1_0_0_0_0, '0']
+- [pfb_channelizer_ccf_0, '5', elster_channel_rx_0_3, '0']
+- [pfb_channelizer_ccf_0, '6', elster_channel_rx_1_3, '0']
+- [pfb_channelizer_ccf_0, '7', elster_channel_rx_0_1_2, '0']
+- [pfb_channelizer_ccf_0, '8', elster_channel_rx_1_1_2, '0']
+- [pfb_channelizer_ccf_0, '9', elster_channel_rx_0_0_0_2, '0']
 
 metadata:
   file_format: 1
