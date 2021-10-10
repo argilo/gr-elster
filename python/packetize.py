@@ -123,9 +123,8 @@ class packetize(gr.basic_block):
             # and extract the bits from the Manchester encoding.
             self.process_packet(channel, man_bits[96::2])
 
-    def forecast(self, noutput_items, ninput_items_required):
-        for channel in range(len(ninput_items_required)):
-            ninput_items_required[channel] = 2496
+    def forecast(self, noutput_items, ninputs):
+        return [2496] * ninputs
 
     def general_work(self, input_items, output_items):
         # Wait until we get at least one packet worth of Manchester bits

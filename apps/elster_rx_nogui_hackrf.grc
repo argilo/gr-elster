@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: Custom
     cmake_opt: ''
     comment: ''
@@ -22,7 +23,6 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: ''
-    window_size: 1280, 2000
   states:
     bus_sink: false
     bus_source: false
@@ -871,7 +871,7 @@ blocks:
     nchans: n_channels
     osr: '1.0'
     samp_delay: '0'
-    taps: firdes.low_pass(1, samp_rate, 175000, 100000, firdes.WIN_HAMMING, 6.76)
+    taps: firdes.low_pass(1, samp_rate, 175000, 100000, window.WIN_HAMMING, 6.76)
   states:
     bus_sink: false
     bus_source: false
