@@ -19,7 +19,6 @@
 # Boston, MA 02110-1301, USA.
 #
 
-from __future__ import division, print_function, unicode_literals
 import datetime
 import os.path
 import struct
@@ -42,10 +41,10 @@ class packetize(gr.basic_block):
                                 out_sig=None)
 
         i = 1
-        filename = "elster-" + "{:03}".format(i) + ".pcap"
+        filename = f"elster-{i:03}.pcap"
         while os.path.exists(filename):
             i += 1
-            filename = "elster-" + "{:03}".format(i) + ".pcap"
+            filename = f"elster-{i:03}.pcap"
         self.file = open(filename, "wb")
         self.linktype = 147
         self.file.write(struct.pack("IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 32767, self.linktype))
@@ -71,26 +70,26 @@ class packetize(gr.basic_block):
         return bytes([reg & 0xff, reg >> 8])
 
     def process_packet(self, channel, bits):
-        bytes = numpy.packbits(bits) ^ 0x55
-        length = bytes[0]
-        if length + 2 > len(bytes):
+        packet = bytes(numpy.packbits(bits) ^ 0x55)
+        length = packet[0]
+        if length + 2 > len(packet):
             print("Invalid packet length.")
             return
-        bytes = bytes[0:length+2]
-        if self.crc_x25(bytes[0:length].tostring()) != bytes[length:length+2].tostring():
+        packet = packet[0:length+2]
+        if self.crc_x25(packet[0:length]) != packet[length:length+2]:
             print("Invalid checksum.")
             return
 
-        caplen = len(bytes)-2
+        caplen = len(packet)-2
         wirelen = caplen
         now = time.time()
         sec = int(now)
         usec = int(round((now-sec)*1000000))
         self.file.write(struct.pack("IIII", sec, usec, caplen, wirelen))
-        self.file.write(bytes[0:-2])
+        self.file.write(packet[0:-2])
         self.file.flush()
 
-        bytestring = ''.join(["0x{:02x}".format(int(byte))[2:4] for byte in bytes])
+        bytestring = packet.hex()
         bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:26] + ' ' + bytestring[26:32] + ' ' + bytestring[32:-4] + ' ' + bytestring[-4:]
         print(datetime.datetime.now().strftime("%H:%M:%S.%f") + ' ' + "{:02}".format(channel) + '  ' + bytestring)
         if length == 0x44:
