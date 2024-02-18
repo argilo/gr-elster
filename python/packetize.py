@@ -70,47 +70,49 @@ class packetize(gr.basic_block):
         return bytes([reg & 0xff, reg >> 8])
 
     def process_packet(self, channel, bits):
-        packet = bytes(numpy.packbits(bits) ^ 0x55)
-        length = packet[0]
-        if length + 2 > len(packet):
+        pkt = bytes(numpy.packbits(bits) ^ 0x55)
+        length = pkt[0]
+        if length + 2 > len(pkt):
             print("Invalid packet length.")
             return
-        packet = packet[0:length+2]
-        if self.crc_x25(packet[0:length]) != packet[length:length+2]:
+        pkt = pkt[0:length+2]
+        if self.crc_x25(pkt[0:length]) != pkt[length:length+2]:
             print("Invalid checksum.")
             return
 
-        caplen = len(packet)-2
+        caplen = len(pkt)-2
         wirelen = caplen
         now = time.time()
         sec = int(now)
         usec = int(round((now-sec)*1000000))
         self.file.write(struct.pack("IIII", sec, usec, caplen, wirelen))
-        self.file.write(packet[0:-2])
+        self.file.write(pkt[0:-2])
         self.file.flush()
 
-        bytestring = packet.hex()
-        bytestring = bytestring[0:2] + ' ' + bytestring[2:4] + ' ' + bytestring[4:12] + ' ' + bytestring[12:20] + ' ' + bytestring[20:26] + ' ' + bytestring[26:32] + ' ' + bytestring[32:-4] + ' ' + bytestring[-4:]
-        print(datetime.datetime.now().strftime("%H:%M:%S.%f") + ' ' + "{:02}".format(channel) + '  ' + bytestring)
-        if length == 0x44:
-            # This packet probably contains meter readings!
-            print()
-            meter_number = int(bytestring[6:14], 16)
-            try:
-                main_reading = int(bytestring[128:134])
-            except ValueError:
-                print("  Error decoding main reading: " + bytestring[128:134])
-                main_reading = 0
-            num_hourly = int(bytestring[58:60], 16)
-            if num_hourly > 17:
-                print("  Number of hourly readings is too high: " + hex(num_hourly))
-                num_hourly = 17
-            hourly_readings = []
-            for reading in range(num_hourly):
-                hourly_readings.append(int(bytestring[60 + reading*4:64 + reading*4], 16) / 100)
-            print("  Meter reading for meter #" + str(meter_number) + ": " + str(main_reading) + " kWh")
-            print("  Hourly readings: " + str(hourly_readings)[1:-1])
-            print()
+        len1, flag1, src, dst = struct.unpack(">BBII", pkt[0:10])
+        time_str = datetime.datetime.now().strftime("%H:%M:%S.%f")
+        print(f"{time_str} {channel:02}  {len1:02x} {flag1:02x} {src:08x} {dst:08x} {pkt[10:13].hex()} {pkt[13:16].hex()} {pkt[16:-2].hex()} {pkt[-2:].hex()}")
+
+        if src & 0x80000000 == 0 and len(pkt) > 16:
+            len4 = pkt[16]
+            if len4 == len1 - 17:  # 1st byte of payload is a length
+                if len(pkt) > 18:
+                    cmd = pkt[18]
+                    if cmd == 0xce and len(pkt) >= 64:  # hourly usage data, every 6 hours
+                        print()
+
+                        main_reading = pkt[61:64].hex()
+                        print(f"  Meter reading for meter #{src}: {main_reading} kWh")
+
+                        n_hours = pkt[26]
+                        if n_hours > 17:
+                            print(f"  Number of hourly readings is too high: {n_hours}")
+                            n_hours = 17
+                        hourly_readings = [reading / 100 for reading in struct.unpack(">" + "H"*n_hours, pkt[27:27 + 2*n_hours])]
+                        readings_str = ", ".join(f"{reading:.2f}" for reading in hourly_readings)
+                        print(f"  Hourly readings: {readings_str}")
+
+                        print()
 
     def manchester_demod_packet(self, channel, man_bits):
         for offset in range(0, len(man_bits), 2):
