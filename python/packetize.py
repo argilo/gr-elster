@@ -76,9 +76,11 @@ class packetize(gr.basic_block):
         if pkt[0] >= 2:
             len_bytes = 1
             length = pkt[0]
+            cmd_start = 15
         else:
             len_bytes = 2
             length = (pkt[0] << 8) | pkt[1]
+            cmd_start = 20
 
         if length + 2 != len(pkt):
             print("Invalid packet length.")
@@ -101,26 +103,26 @@ class packetize(gr.basic_block):
         time_str = datetime.datetime.now().strftime("%H:%M:%S.%f")
         print(f"{time_str} {channel:02}  {pkt[0:len_bytes].hex()} {flag1:02x} {src:08x} {dst:08x} {payload[9:12].hex()} {payload[12:15].hex()} {payload[15:].hex()} {pkt[-2:].hex()}")
 
-        if src & 0x80000000 == 0 and len(pkt) > 16:
-            len4 = payload[15]
-            if len4 == length - 17:  # 1st byte of payload is a length
-                if len(pkt) > 18:
-                    cmd = payload[17]
-                    if cmd == 0xce and len(pkt) >= 64:  # hourly usage data, every 6 hours
-                        print()
+        if src & 0x80000000 == 0 and len(pkt) > cmd_start:
+            cmd_len = payload[cmd_start]
+            if cmd_len == 0x33 and len(pkt) >= cmd_start + 1 + cmd_len:
+                cmd_payload = payload[cmd_start + 1:cmd_start + 1 + cmd_len]
+                cmd = cmd_payload[1]
+                if cmd == 0xce:  # hourly usage data, every 6 hours
+                    print()
 
-                        main_reading = payload[60:63].hex()
-                        print(f"  Meter reading for meter #{src}: {main_reading} kWh")
+                    main_reading = cmd_payload[44:47].hex()
+                    print(f"  Meter reading for meter #{src}: {main_reading} kWh")
 
-                        n_hours = payload[25]
-                        if n_hours > 17:
-                            print(f"  Number of hourly readings is too high: {n_hours}")
-                            n_hours = 17
-                        hourly_readings = [reading / 100 for reading in struct.unpack(">" + "H"*n_hours, payload[26:26 + 2*n_hours])]
-                        readings_str = ", ".join(f"{reading:.2f}" for reading in hourly_readings)
-                        print(f"  Hourly readings: {readings_str}")
+                    n_hours = cmd_payload[9]
+                    if n_hours > 17:
+                        print(f"  Number of hourly readings is too high: {n_hours}")
+                        n_hours = 17
+                    hourly_readings = [reading / 100 for reading in struct.unpack(">" + "H"*n_hours, cmd_payload[10:10 + 2*n_hours])]
+                    readings_str = ", ".join(f"{reading:.2f}" for reading in hourly_readings)
+                    print(f"  Hourly readings: {readings_str}")
 
-                        print()
+                    print()
 
     def forecast(self, noutput_items, ninputs):
         return [640] * ninputs
