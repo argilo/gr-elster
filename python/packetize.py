@@ -103,9 +103,9 @@ class packetize(gr.basic_block):
         time_str = datetime.datetime.now().strftime("%H:%M:%S.%f")
         print(f"{time_str} {channel:02}  {pkt[0:len_bytes].hex()} {flag1:02x} {src:08x} {dst:08x} {payload[9:12].hex()} {payload[12:15].hex()} {payload[15:].hex()} {pkt[-2:].hex()}")
 
-        if src & 0x80000000 == 0 and len(pkt) > cmd_start:
+        if src & 0x80000000 == 0 and len(payload) > cmd_start:
             cmd_len = payload[cmd_start]
-            if cmd_len == 0x33 and len(pkt) >= cmd_start + 1 + cmd_len:
+            if cmd_len == 0x33 and len(payload) >= cmd_start + 1 + cmd_len:
                 cmd_payload = payload[cmd_start + 1:cmd_start + 1 + cmd_len]
                 cmd = cmd_payload[1]
                 if cmd == 0xce:  # hourly usage data, every 6 hours
