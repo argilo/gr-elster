@@ -23,6 +23,7 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: 1-Ch Rx
+    window_size: (1000,1000)
   states:
     bus_sink: false
     bus_source: false
@@ -48,7 +49,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2 / 56.48E-6
+    value: '142222'
   states:
     bus_sink: false
     bus_source: false
@@ -69,7 +70,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [336, 196.0]
+    coordinate: [320, 196.0]
     rotation: 0
     state: enabled
 - name: digital_binary_slicer_fb_0
@@ -84,7 +85,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 152.0]
+    coordinate: [1088, 152.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0
@@ -111,7 +112,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 140.0]
+    coordinate: [760, 140.0]
     rotation: 0
     state: true
 - name: pad_sink_0
@@ -129,7 +130,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 148.0]
+    coordinate: [1248, 148.0]
     rotation: 0
     state: enabled
 - name: pad_source_0
@@ -149,7 +150,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 196.0]
+    coordinate: [168, 196.0]
     rotation: 0
     state: enabled
 - name: root_raised_cosine_filter_0
@@ -185,3 +186,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: 3.10.9.2
